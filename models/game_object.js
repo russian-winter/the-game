@@ -1,15 +1,12 @@
 class GameObject {
-  constructor(x = 0, y = 0) {
-    this.x = x;
-    this.y = y;
-    this.vx = 0;
-    this.vy = 0;
+  constructor(position) {
+    this.position = position || new Vector3();
+    this.velocity = new Vector3();
     this.model = null;
   }
 
   // Basic kinematics
   update() {
-    this.x += this.vx;
-    this.y += this.vy;
+    this.position = this.position.add(this.velocity);
   }
 };
