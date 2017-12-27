@@ -7,7 +7,7 @@ class GameObject extends EventEmitter {
   }
 
   // Basic kinematics
-  update() {
+  update(time) {
     this.position = this.position.add(this.velocity);
   }
 };

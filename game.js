@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   // Game loop definition
   const update = () => {
-    world.update();
+    world.update(Date.now());
     //renderer.render(world);
     window.requestAnimationFrame(update);
   };
