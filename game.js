@@ -2,7 +2,14 @@
 document.addEventListener('DOMContentLoaded', function(event) {
   // Initialize game objects
   const world = new World();
-
+  const player = new Player();
+  world.addGameObject(player);
+  const playerInput = {
+    'up': false,
+    'down': false,
+    'right': false,
+    'left': false
+  };
   // Initialize renderer
   // const renderer = ????;
 
@@ -15,4 +22,21 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   // Start game loop!
   update();
+  document.addEventListener('keydown', e => {registerInput(e);});
+  document.addEventListener('keyup', e => {registerInput(e);});
+  function registerInput(e) {
+    const isKeyDown = e.type === 'keydown';
+    const action = {
+      37: 'left',
+      38: 'up',
+      39: 'right',
+      40: 'down'
+    }[e.keyCode];
+
+    if (direction) {
+      playerInput[action] = isKeyDown;
+    }
+
+    player.onPlayerInput(playerInput);
+  }
 });
