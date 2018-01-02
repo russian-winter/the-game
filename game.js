@@ -1,7 +1,7 @@
 // Wait for everything to load...
 document.addEventListener('DOMContentLoaded', function(event) {
   // Initialize game objects
-  const world = new World();
+  window.world = new World();
   const player = new Player();
   world.addGameObject(player);
   const playerInput = {
@@ -10,13 +10,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'right': false,
     'left': false
   };
+
   // Initialize renderer
-  // const renderer = ????;
+  const renderer = new Renderer();
 
   // Game loop definition
   const update = () => {
     world.update(Date.now());
-    //renderer.render(world);
+    renderer.render(world);
     window.requestAnimationFrame(update);
   };
 
@@ -33,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       40: 'down'
     }[e.keyCode];
 
-    if (direction) {
+    if (action) {
       playerInput[action] = isKeyDown;
     }
 

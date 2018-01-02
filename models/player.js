@@ -18,7 +18,7 @@ class Player extends GameObject {
   onPlayerInput(playerInput) {
     this.velocity = new Vector3(
       playerInput['left'] * -1 + playerInput['right'] * 1,
-      playerInput['up'] * 1 + playerInput['down'] * -1,
+      playerInput['up'] * -1 + playerInput['down'] * 1,
       0
     );
 
