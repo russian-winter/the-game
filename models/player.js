@@ -1,9 +1,11 @@
 class Player extends GameObject {
 
-  constructor(position) {
-    super(position);
-
+  constructor(position, size) {
+    super(position, size);
+    this.direction = new Vector3(1,0,0);
     this.health = 10;
+    this.shooted = false;
+    this.bullets = [];
   }
 
   move(direction) {
@@ -21,6 +23,20 @@ class Player extends GameObject {
       playerInput['up'] * -1 + playerInput['down'] * 1,
       0
     );
+    if(playerInput['left']){
+      this.direction = new Vector3(-1, 0, 0);
+    }
+    else if(playerInput['right']){
+      this.direction = new Vector3(1, 0, 0);
+    }
+    if(playerInput['up']){
+      this.direction = new Vector3(0, -1, 0);
+    }
+    else if(playerInput['down']){
+      this.direction = new Vector3(0, 1, 0);
+    }
+
+    this.shoot(playerInput['space']);
   }
 
   onHit() {
@@ -28,6 +44,23 @@ class Player extends GameObject {
     if (this.health === 0) {
 
       //DIE
+    }
+  }
+  /**
+   * Shoots a bullet if space was pressed, just once
+   * @param {boolean} input space bar input
+   */
+  shoot(input){
+    // Shoot only once when space bar is pressed
+    if(!this.shooted && input) {
+      this.shooted = true;
+      // Bullet volocity is player direction times some factor
+      let speed = 2;
+      let velocity = this.direction.multiply(speed);
+      this.bullets.push(new Bullet(this.position, new Vector3(0.25, 0.25, 0.25), velocity));
+    }
+    else {
+      this.shooted = input;
     }
   }
 
