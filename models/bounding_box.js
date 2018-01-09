@@ -4,11 +4,11 @@ class BoundingBox {
         this.size = size || new Vector3();
     }
     /**
-    * Returns true if two BoundingBox intersects, false otherwise.
-    * @boundingBox(object) BoundingBox to check intersection against.
-    * @return
-    *   true if the BoundingBoxes intersected.
-    **/
+     * Returns true if two BoundingBox intersects, false otherwise.
+     * @boundingBox(object) BoundingBox to check intersection against.
+     * @return
+     *   true if the BoundingBoxes intersected. 
+     */
     intersects(boundingBox){
       let intersected_x = false;
       let intersected_y = false;
@@ -16,9 +16,15 @@ class BoundingBox {
          ((this.position.x + this.size.x) >= boundingBox.position.x)){
            intersected_x = true;
       }
+      else{
+        return false;
+      }
       if((this.position.y <= (boundingBox.position.y + boundingBox.size.y)) &&
          ((this.position.y + this.size.y) >= boundingBox.position.y)){
            intersected_y = true;
+      }
+      else{
+        return false;
       }
       return intersected_x && intersected_y;
     }
