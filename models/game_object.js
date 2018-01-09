@@ -10,7 +10,16 @@ class GameObject extends EventEmitter {
     this.boundingBox =
         new BoundingBox(this.position.subtract(size.divide(2)), size);
   }
-
+  /**
+  * Checks if two GameObjects collisioned by checking the intersection of their
+  * BoundingBoxes.
+  * @gameObject(object) another gameObject to check intersection against.
+  * @return
+  *   true if BoundingBoxes intersects, flase otherwise.
+  **/
+  collision(gameObject){
+    return this.boundingBox.intersects(gameObject.boundingBox);
+  }
   /**
   * Basic kinematics.
   */
