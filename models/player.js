@@ -21,9 +21,7 @@ class Player extends GameObject {
       playerInput['up'] * -1 + playerInput['down'] * 1,
       0
     );
-
-    console.log(this.position)
-  }  
+  }
 
   onHit() {
     this.health--;
