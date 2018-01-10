@@ -1,0 +1,24 @@
+{
+  "name": "the-game",
+  "version": "0.1.0",
+  "description": "A generic multiplayer online game",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/russian-winter/the-game.git"
+  },
+  "author": "Multiple, see repo contributions",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/russian-winter/the-game/issues"
+  },
+  "homepage": "https://github.com/russian-winter/the-game#readme",
+  "devDependencies": {
+    "eslint": "^4.15.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  }
+}
