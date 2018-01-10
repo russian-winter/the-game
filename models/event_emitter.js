@@ -43,4 +43,4 @@ class EventEmitter {
     this._events[eventName].forEach(listener => listener.apply(this, args));
     return true;
   }
-};
+}

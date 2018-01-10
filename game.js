@@ -1,14 +1,19 @@
+/* eslint-env browser */
+/* global World Renderer Player */
+
 // Wait for everything to load...
-document.addEventListener('DOMContentLoaded', function(event) {
+document.addEventListener('DOMContentLoaded', () => {
   // Initialize game objects
-  window.world = new World();
+  const world = new World();
+  window.world = world; // debug only
   const player = new Player();
+
   world.addGameObject(player);
   const playerInput = {
-    'up': false,
-    'down': false,
-    'right': false,
-    'left': false
+    up: false,
+    down: false,
+    right: false,
+    left: false
   };
 
   // Initialize renderer
@@ -16,9 +21,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   // Game loop definition
   const update = () => {
-    while(bullet = player.bullets.pop()){
+    let bullet;
+    while (bullet = player.bullets.pop()) {
       world.addGameObject(bullet);
     }
+
     world.update(Date.now());
     renderer.render(world);
     window.requestAnimationFrame(update);
@@ -26,9 +33,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   // Start game loop!
   update();
-  document.addEventListener('keydown', e => {registerInput(e);});
-  document.addEventListener('keyup', e => {registerInput(e);});
-  function registerInput(e) {
+
+  // Handler for user input
+  const registerInput = (e) => {
     const isKeyDown = e.type === 'keydown';
     const action = {
       32: 'space',
@@ -43,5 +50,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
 
     player.onPlayerInput(playerInput);
-  }
+  };
+
+  // Listen for user input
+  document.addEventListener('keydown', (e) => { registerInput(e); });
+  document.addEventListener('keyup', (e) => { registerInput(e); });
 });

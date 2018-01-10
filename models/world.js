@@ -1,3 +1,5 @@
+/* global GameObject */
+
 class World extends GameObject {
   constructor() {
     super();
@@ -13,10 +15,10 @@ class World extends GameObject {
   }
 
   /**
-   * Add a game object to the list of current game objects
-   * @gameObject {Object} a game object that should be added  
-   */
+  * Add a game object to the list of current game objects
+  * @gameObject {Object} a game object that should be added
+  */
   addGameObject(gameObject) {
     this.objects.push(gameObject);
-  }     
-};
+  }
+}

@@ -1,3 +1,5 @@
+/* eslint no-underscore-dangle: ["error", { "allow": ["_a"] }] */
+
 class Vector3 {
   /**
   * Class constructor.
@@ -27,9 +29,9 @@ class Vector3 {
   */
   dot(vector) {
     return (
-      this._a[0] * vector._a[0] +
-      this._a[1] * vector._a[1] +
-      this._a[2] * vector._a[2]
+      (this._a[0] * vector._a[0]) +
+      (this._a[1] * vector._a[1]) +
+      (this._a[2] * vector._a[2])
     );
   }
 
@@ -39,9 +41,9 @@ class Vector3 {
   */
   cross(vector) {
     return new Vector3(
-      this._a[1] * vector._a[2] - this._a[2] * vector._a[1],
-      this._a[2] * vector._a[0] - this._a[0] * vector._a[2],
-      this._a[0] * vector._a[1] - this._a[1] * vector._a[0]
+      (this._a[1] * vector._a[2]) - (this._a[2] * vector._a[1]),
+      (this._a[2] * vector._a[0]) - (this._a[0] * vector._a[2]),
+      (this._a[0] * vector._a[1]) - (this._a[1] * vector._a[0])
     );
   }
 
@@ -51,7 +53,9 @@ class Vector3 {
   */
   negate() {
     return new Vector3(
-      -this._a[0], -this._a[1], -this._a[2]
+      -this._a[0],
+      -this._a[1],
+      -this._a[2]
     );
   }
 
@@ -97,9 +101,9 @@ class Vector3 {
   */
   normalize() {
     const length = Math.sqrt(
-      this._a[0] * this._a[0] +
-      this._a[1] * this._a[1] +
-      this._a[2] * this._a[2]
+      (this._a[0] * this._a[0]) +
+      (this._a[1] * this._a[1]) +
+      (this._a[2] * this._a[2])
     );
 
     if (length === 0) {
@@ -116,9 +120,9 @@ class Vector3 {
   */
   length() {
     return Math.sqrt(
-      this._a[0] * this._a[0] +
-      this._a[1] * this._a[1] +
-      this._a[2] * this._a[2]
+      (this._a[0] * this._a[0]) +
+      (this._a[1] * this._a[1]) +
+      (this._a[2] * this._a[2])
     );
   }
 
@@ -128,9 +132,9 @@ class Vector3 {
   */
   lengthSquared() {
     return (
-      this._a[0] * this._a[0] +
-      this._a[1] * this._a[1] +
-      this._a[2] * this._a[2]
+      (this._a[0] * this._a[0]) +
+      (this._a[1] * this._a[1]) +
+      (this._a[2] * this._a[2])
     );
   }
 
@@ -139,9 +143,9 @@ class Vector3 {
   */
   distanceTo(vector) {
     return Math.sqrt(
-      (this._a[0] - vector._a[0]) * (this._a[0] - vector._a[0]) +
-      (this._a[1] - vector._a[1]) * (this._a[1] - vector._a[1]) +
-      (this._a[2] - vector._a[2]) * (this._a[2] - vector._a[2])
+      ((this._a[0] - vector._a[0]) * (this._a[0] - vector._a[0])) +
+      ((this._a[1] - vector._a[1]) * (this._a[1] - vector._a[1])) +
+      ((this._a[2] - vector._a[2]) * (this._a[2] - vector._a[2]))
     );
   }
 
@@ -151,9 +155,9 @@ class Vector3 {
   */
   distanceToSquared(vector) {
     return (
-      (this._a[0] - vector._a[0]) * (this._a[0] - vector._a[0]) +
-      (this._a[1] - vector._a[1]) * (this._a[1] - vector._a[1]) +
-      (this._a[2] - vector._a[2]) * (this._a[2] - vector._a[2])
+      ((this._a[0] - vector._a[0]) * (this._a[0] - vector._a[0])) +
+      ((this._a[1] - vector._a[1]) * (this._a[1] - vector._a[1])) +
+      ((this._a[2] - vector._a[2]) * (this._a[2] - vector._a[2]))
     );
   }
 
@@ -161,36 +165,30 @@ class Vector3 {
   * Return a string representation of this vector.
   */
   toString() {
-    return '(' + this._a[0] + ', ' + this._a[1] + ', ' + this._a[2] + ')';
+    return `(${this._a[0]},  ${this._a[1]},  ${this._a[2]})`;
   }
-};
+}
 
-/**********************************
+/* ********************************
  * Vector3 properties definitions *
- *********************************/
+ ******************************** */
 
 const prop0 = {
   enumerable: true,
-
-  get: function() { return this._a[0]; },
-
-  set: function(val) { this._a[0] = val; }
+  get() { return this._a[0]; },
+  set(val) { this._a[0] = val; }
 };
 
 const prop1 = {
   enumerable: true,
-
-  get: function() { return this._a[1]; },
-
-  set: function(val) { this._a[1] = val; }
+  get() { return this._a[1]; },
+  set(val) { this._a[1] = val; }
 };
 
 const prop2 = {
   enumerable: true,
-
-  get: function() { return this._a[2]; },
-
-  set: function(val) { this._a[2] = val; }
+  get() { return this._a[2]; },
+  set(val) { this._a[2] = val; }
 };
 
 // Define x, y and z properties. Define [0], [1], [2] too
