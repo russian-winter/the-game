@@ -4,7 +4,25 @@ class Renderer {
   constructor() {
     this.canvas = document.querySelector('canvas');
     this.context = this.canvas.getContext('2d');
+
+    // Listen for window size change
+    window.addEventListener('resize', () => this.resize());
+    // Adjust the size of the canvas for the first time
+    this.resize();
     this.factor = 10;
+  }
+
+  /**
+  * Set the canvas internal size (the size of the bitmap) to be
+  * equal to the available size.
+  */
+  resize() {
+    // Get the screen pixel density (or the browser zoom)
+    const ratio = window.devicePixelRatio || 1;
+
+    // Get the real size in physical pixels (instead of logical pixels)
+    this.canvas.width = ratio * window.innerWidth;
+    this.canvas.height = ratio * window.innerHeight;
   }
 
   /**
