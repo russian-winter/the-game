@@ -2,14 +2,17 @@
 
 class Renderer {
   constructor() {
+    // DOM object and drawing api refereces
     this.canvas = document.querySelector('canvas');
     this.context = this.canvas.getContext('2d');
+
+    // Default scale, updated in resize()
+    this.scaleFactor = 10;
 
     // Listen for window size change
     window.addEventListener('resize', () => this.resize());
     // Adjust the size of the canvas for the first time
     this.resize();
-    this.factor = 10;
   }
 
   /**
@@ -23,6 +26,9 @@ class Renderer {
     // Get the real size in physical pixels (instead of logical pixels)
     this.canvas.width = ratio * window.innerWidth;
     this.canvas.height = ratio * window.innerHeight;
+
+    // make the new width equal to 100 game units (meters)
+    this.scaleFactor = this.canvas.width / 100;
   }
 
   /**
@@ -36,10 +42,10 @@ class Renderer {
     // Iterate over each world object and draw its bounding box
     world.objects.forEach((object) => {
       this.context.fillRect(
-        object.boundingBox.position.x * this.factor,
-        object.boundingBox.position.y * this.factor,
-        object.boundingBox.size.x * this.factor,
-        object.boundingBox.size.y * this.factor
+        object.boundingBox.position.x * this.scaleFactor,
+        object.boundingBox.position.y * this.scaleFactor,
+        object.boundingBox.size.x * this.scaleFactor,
+        object.boundingBox.size.y * this.scaleFactor
       );
     });
   }
