@@ -36,7 +36,11 @@ class Player extends GameObject {
       this.direction = new Vector3(0, 1, 0);
     }
 
-    this.shoot(playerInput.space);
+    // Shoot only once per action
+    if (playerInput.shoot && !this.shooted) {
+      this.shoot(playerInput.shoot);
+    }
+    this.shooted = playerInput.shoot;
   }
 
   onHit() {
@@ -48,23 +52,16 @@ class Player extends GameObject {
   }
 
   /**
-   * Shoots a bullet if space was pressed, just once
-   * @param {boolean} input space bar input
+   * Shoots a bullet in the direction the player is facing.
    */
-  shoot(input) {
-    // Shoot only once when space bar is pressed
-    if (!this.shooted && input) {
-      this.shooted = true;
-      // Bullet volocity is player direction times some factor
-      const speed = 2;
-      const velocity = this.direction.multiply(speed);
-      Bullet.create(
-        this.position,
-        new Vector3(0.25, 0.25, 0.25),
-        velocity
-      );
-    } else {
-      this.shooted = input;
-    }
+  shoot() {
+    // Bullet volocity is player direction times some factor
+    const speed = 2;
+    const velocity = this.direction.multiply(speed);
+    Bullet.create(
+      this.position,
+      new Vector3(0.25, 0.25, 0.25),
+      velocity
+    );
   }
 }

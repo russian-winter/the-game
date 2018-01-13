@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     up: false,
     down: false,
     right: false,
-    left: false
+    left: false,
+    shoot: false
   };
 
   // Initialize renderer
@@ -33,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const registerInput = (e) => {
     const isKeyDown = e.type === 'keydown';
     const action = {
-      32: 'space',
+      32: 'shoot',
       37: 'left',
       38: 'up',
       39: 'right',
