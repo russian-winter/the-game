@@ -30,4 +30,22 @@ class GameObject extends EventEmitter {
     this.position = this.position.add(this.velocity);
     this.boundingBox.position = this.boundingBox.position.add(this.velocity);
   }
+
+  /**
+  * Creates a new instance of a game object.
+  * The new object is automatically added to the world.
+  */
+  static create(...args) {
+    const object = new this(...args);
+
+    // Notify the receiver of new game objects (world, you there?)
+    if (GameObject.onGameObjectCreated) {
+      GameObject.onGameObjectCreated(object);
+    }
+
+    return object;
+  }
 }
+
+// Listener of new GameObjects (it should be a world)
+GameObject.onGameObjectCreated = null;

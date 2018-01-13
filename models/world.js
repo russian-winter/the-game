@@ -4,6 +4,9 @@ class World extends GameObject {
   constructor() {
     super();
     this.objects = [];
+
+    // Listen for new game objects
+    GameObject.onGameObjectCreated = object => this.addGameObject(object);
   }
 
   /**
@@ -15,10 +18,22 @@ class World extends GameObject {
   }
 
   /**
-  * Add a game object to the list of current game objects
-  * @gameObject {Object} a game object that should be added
+  * Add a game object to the list of current game objects.
+  * @gameObject {Object} a game object that should be added.
   */
   addGameObject(gameObject) {
     this.objects.push(gameObject);
+  }
+
+  /**
+  * Removes a game object from the list of current game objects.
+  * @gameObject {Object} a game object that should be removed.
+  */
+  removeGameObject(gameObject) {
+    const index = this.objects.indexOf(gameObject);
+
+    if (index !== -1) {
+      this.objects.splice(index, 1);
+    }
   }
 }
