@@ -21,11 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Game loop definition
   const update = () => {
-    let bullet;
-    while (bullet = player.bullets.pop()) {
-      world.addGameObject(bullet);
-    }
-
     world.update(Date.now());
     renderer.render(world);
     window.requestAnimationFrame(update);

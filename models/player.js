@@ -6,7 +6,6 @@ class Player extends GameObject {
     this.direction = new Vector3(1, 0, 0);
     this.health = 10;
     this.shooted = false;
-    this.bullets = [];
   }
 
   move(direction) {
@@ -59,11 +58,11 @@ class Player extends GameObject {
       // Bullet volocity is player direction times some factor
       const speed = 2;
       const velocity = this.direction.multiply(speed);
-      this.bullets.push(new Bullet(
+      Bullet.create(
         this.position,
         new Vector3(0.25, 0.25, 0.25),
         velocity
-      ));
+      );
     } else {
       this.shooted = input;
     }
