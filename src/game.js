@@ -1,56 +1,44 @@
-/* eslint-env browser */
+import EventEmitter from './models/event_emitter';
 import World from './models/world';
-import Renderer from './renderers/renderer';
 import Player from './models/player';
 
-// Wait for everything to load...
-document.addEventListener('DOMContentLoaded', () => {
-  // Initialize game objects
-  const world = new World();
-  window.world = world; // debug only
-  const player = new Player();
+export default class Game extends EventEmitter {
+  constructor(isServer) {
+    super();
+    this.isServer = isServer;
 
-  world.addGameObject(player);
-  const playerInput = {
-    up: false,
-    down: false,
-    right: false,
-    left: false,
-    shoot: false
-  };
+    // Initialize game objects
+    this.world = new World();
+    this.players = [];
 
-  // Initialize renderer
-  const renderer = new Renderer();
-
-  // Game loop definition
-  const update = () => {
-    world.update(Date.now());
-    renderer.render(world);
-    window.requestAnimationFrame(update);
-  };
-
-  // Start game loop!
-  update();
-
-  // Handler for user input
-  const registerInput = (e) => {
-    const isKeyDown = e.type === 'keydown';
-    const action = {
-      32: 'shoot',
-      37: 'left',
-      38: 'up',
-      39: 'right',
-      40: 'down'
-    }[e.keyCode];
-
-    if (action) {
-      playerInput[action] = isKeyDown;
+    // Client and server specific code
+    if (this.isServer) {
+      this.clients = []; // references to the clients
+    } else {
+      this.server = null; // a reference to the server
+      this.player = null; // the current player
     }
+  }
 
-    player.onPlayerInput(playerInput);
-  };
+  /**
+  * Updates the world.
+  * When running on a server, it sends updates to the clients.
+  */
+  update() {
+    const time = Date.now();
+    this.world.update(time);
 
-  // Listen for user input
-  document.addEventListener('keydown', (e) => { registerInput(e); });
-  document.addEventListener('keyup', (e) => { registerInput(e); });
-});
+    if (this.isServer) {
+      this.clients.forEach(client => client.update());
+    }
+  }
+
+  /**
+  * Adds a new player to the game.
+  */
+  createPlayer(...args) {
+    const player = Player.create(...args);
+    this.players.push(player);
+    return player;
+  }
+}
