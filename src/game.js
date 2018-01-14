@@ -35,9 +35,11 @@ export default class Game extends EventEmitter {
 
   /**
   * Adds a new player to the game.
+  * TODO: Clients should receive a player from server.
   */
   createPlayer(...args) {
     const player = Player.create(...args);
+    player.id = this.players.length + 1; // FIXME: get this id from server
     this.players.push(player);
     return player;
   }

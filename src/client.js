@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize renderer
   const renderer = new Renderer();
 
+  // Debug helper
+  window.game = game;
+
   // Game loop definition
   const update = () => {
     game.update();

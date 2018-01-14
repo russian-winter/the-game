@@ -5,13 +5,26 @@ import Bullet from './bullet';
 export default class Player extends GameObject {
   constructor(position, size) {
     super(position, size);
+
     this.direction = new Vector3(1, 0, 0);
     this.health = 10;
     this.shooted = false;
   }
 
-  move(direction) {
-    this.velocity = direction;
+  /**
+  * Returns the id of a player.
+  * By definition, a player is its own ownwer.
+  */
+  get id() {
+    return this.ownerId;
+  }
+
+  /**
+  * Sets the id of a player.
+  * This updates the owner id to match the player.
+  */
+  set id(val) {
+    this.ownerId = val;
   }
 
   /*
