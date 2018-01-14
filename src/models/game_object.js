@@ -1,6 +1,8 @@
-/* global EventEmitter Vector3 BoundingBox */
+import EventEmitter from './event_emitter';
+import Vector3 from './vector3';
+import BoundingBox from './bounding_box';
 
-class GameObject extends EventEmitter {
+export default class GameObject extends EventEmitter {
   constructor(position = new Vector3(), size = new Vector3(0.5, 0.5, 0.5)) {
     super();
     this.position = position;

@@ -1,6 +1,8 @@
-/* global GameObject Vector3 Bullet */
+import GameObject from './game_object';
+import Vector3 from './vector3';
+import Bullet from './bullet';
 
-class Player extends GameObject {
+export default class Player extends GameObject {
   constructor(position, size) {
     super(position, size);
     this.direction = new Vector3(1, 0, 0);

@@ -1,6 +1,6 @@
-/* global GameObject */
+import GameObject from './game_object';
 
-class World extends GameObject {
+export default class World extends GameObject {
   constructor() {
     super();
     this.objects = [];

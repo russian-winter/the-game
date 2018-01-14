@@ -1,5 +1,7 @@
 /* eslint-env browser */
-/* global World Renderer Player */
+import World from './models/world';
+import Renderer from './renderers/renderer';
+import Player from './models/player';
 
 // Wait for everything to load...
 document.addEventListener('DOMContentLoaded', () => {

@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-class Renderer {
+export default class Renderer {
   constructor() {
     // DOM object and drawing api refereces
     this.canvas = document.querySelector('canvas');

@@ -1,6 +1,6 @@
 /* eslint no-underscore-dangle: ["error", { "allow": ["_a"] }] */
 
-class Vector3 {
+export default class Vector3 {
   /**
   * Class constructor.
   */

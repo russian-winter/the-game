@@ -1,6 +1,6 @@
-/* global Vector3 */
+import Vector3 from './vector3';
 
-class BoundingBox {
+export default class BoundingBox {
   constructor(position = new Vector3(), size = new Vector3()) {
     this.position = position;
     this.size = size;
