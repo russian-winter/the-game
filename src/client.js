@@ -6,7 +6,6 @@ import Renderer from './renderers/renderer';
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize game objects
   const game = new Game(false);
-  const player = game.createPlayer();
 
   // Initialize renderer
   const renderer = new Renderer();
@@ -17,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Game loop definition
   const update = () => {
     game.update();
-    renderer.render(game.world, player);
+    renderer.render(game);
     window.requestAnimationFrame(update);
   };
 
@@ -57,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
       playerActions[action] = isKeyDown;
     }
 
-    player.onPlayerInput(playerActions);
+    game.player.onPlayerInput(playerActions);
   };
 
   // Listen for user input

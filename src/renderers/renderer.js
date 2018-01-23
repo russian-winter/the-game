@@ -34,13 +34,13 @@ export default class Renderer {
   /**
   * Draws a frame.
   */
-  render(world) {
+  render(game) {
   // Clear canvas and set default color
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.fillStyle = '#ffffff';
 
     // Iterate over each world object and draw its bounding box
-    world.objects.forEach((object) => {
+    game.world.objects.forEach((object) => {
       this.context.fillRect(
         object.boundingBox.position.x * this.scaleFactor,
         object.boundingBox.position.y * this.scaleFactor,

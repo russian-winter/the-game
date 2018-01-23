@@ -1,6 +1,7 @@
 import EventEmitter from './models/event_emitter';
 import World from './models/world';
 import Player from './models/player';
+import Camera from './models/camera';
 
 export default class Game extends EventEmitter {
   constructor(isServer) {
@@ -16,7 +17,9 @@ export default class Game extends EventEmitter {
       this.clients = []; // references to the clients
     } else {
       this.server = null; // a reference to the server
-      this.player = null; // the current player
+      this.player = this.createPlayer(); // the current player
+      this.camera = Camera.create(); // the current camera
+      this.camera.target = this.player;
     }
   }
 
