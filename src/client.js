@@ -1,11 +1,15 @@
 /* eslint-env browser */
 import Game from './game';
 import Renderer from './renderers/renderer';
+import ClientConnection from './networking/client_connection';
 
 // Wait for everything to load...
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize game objects
   const game = new Game(false);
+  const player = game.createPlayer();
+  // const connection = new ClientConnection();
+  // connection.connect();
 
   // Initialize renderer
   const renderer = new Renderer();
