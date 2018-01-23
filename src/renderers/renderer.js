@@ -54,6 +54,11 @@ export default class Renderer {
     // Iterate over each world object and draw its bounding box
     this.context.fillStyle = '#ffffff';
     game.world.objects.forEach((object) => {
+      if (!object.model) {
+        // Do not render invisible objects!
+        return;
+      }
+
       this.context.fillRect(
         object.boundingBox.position.x * this.scaleFactor,
         object.boundingBox.position.y * this.scaleFactor,

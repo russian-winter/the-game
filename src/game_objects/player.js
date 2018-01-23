@@ -6,6 +6,7 @@ export default class Player extends GameObject {
   constructor(position, size) {
     super(position, size);
 
+    this.model = {};
     this.direction = new Vector3(1, 0, 0);
     this.health = 10;
     this.shooted = false;

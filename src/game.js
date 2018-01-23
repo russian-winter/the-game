@@ -1,7 +1,7 @@
-import EventEmitter from './models/event_emitter';
-import World from './models/world';
-import Player from './models/player';
-import Camera from './models/camera';
+import EventEmitter from './game_objects/event_emitter';
+import World from './game_objects/world';
+import Player from './game_objects/player';
+import Camera from './game_objects/camera';
 
 export default class Game extends EventEmitter {
   constructor(isServer) {
