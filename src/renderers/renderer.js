@@ -37,9 +37,22 @@ export default class Renderer {
   render(game) {
   // Clear canvas and set default color
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.context.fillStyle = '#ffffff';
+
+    let fillColor = '#ff4444';
+    const step = 10;
+    for (let i = 0; i < 100; i += step) {
+      for (let j = 0; j < 100; j += step) {
+        this.context.fillStyle = fillColor;
+        this.context.fillRect(i * this.scaleFactor, j * this.scaleFactor,
+          (i + step) * this.scaleFactor, (j + step) * this.scaleFactor);
+
+        fillColor = (fillColor === '#ff4444') ? '#4444ff' : '#ff4444';
+      }
+      fillColor = (fillColor === '#ff4444') ? '#4444ff' : '#ff4444';
+    }
 
     // Iterate over each world object and draw its bounding box
+    this.context.fillStyle = '#ffffff';
     game.world.objects.forEach((object) => {
       this.context.fillRect(
         object.boundingBox.position.x * this.scaleFactor,
