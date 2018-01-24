@@ -37,7 +37,9 @@ export default class GameObject extends EventEmitter {
   */
   update(/* time */) {
     this.position = this.position.add(this.velocity);
-    this.boundingBox.position = this.boundingBox.position.add(this.velocity);
+    this.boundingBox.position = this.position.subtract(
+      this.boundingBox.size.multiply(0.5)
+    );
   }
 
   /**
