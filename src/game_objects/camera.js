@@ -1,4 +1,6 @@
 import GameObject from './game_object';
+import Vector3 from './vector3';
+
 
 export default class Camera extends GameObject {
   constructor(...args) {
@@ -6,6 +8,8 @@ export default class Camera extends GameObject {
 
     // {GameObject}
     this.target = null;
+
+    this.zoom = 20;
   }
 
   /**
