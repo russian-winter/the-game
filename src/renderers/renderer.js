@@ -45,13 +45,7 @@ export default class Renderer {
         // Do not render invisible objects!
         return;
       }
-
-      this.context.fillRect(
-        object.boundingBox.position.x * this.scaleFactor,
-        object.boundingBox.position.y * this.scaleFactor,
-        object.boundingBox.size.x * this.scaleFactor,
-        object.boundingBox.size.y * this.scaleFactor
-      );
+      object.model.render(this.context, this.scaleFactor);
     });
   }
 }

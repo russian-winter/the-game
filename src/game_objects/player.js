@@ -1,12 +1,12 @@
 import GameObject from './game_object';
 import Vector3 from './vector3';
 import Bullet from './bullet';
+import PlayerModel from '../models/player_model';
 
 export default class Player extends GameObject {
-  constructor(position, size) {
-    super(position, size);
+  constructor(position, model = new PlayerModel()) {
+    super(position, model);
 
-    this.model = {};
     this.direction = new Vector3(1, 0, 0);
     this.health = 10;
     this.shooted = false;
@@ -75,7 +75,7 @@ export default class Player extends GameObject {
     const speed = 2;
     const velocity = this.direction.multiply(speed);
     Bullet.create(
-      this.position,
+      this.position.add(this.model.size.divide(2)),
       new Vector3(0.25, 0.25, 0.25),
       velocity
     );

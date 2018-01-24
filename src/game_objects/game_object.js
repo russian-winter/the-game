@@ -1,9 +1,8 @@
 import EventEmitter from './event_emitter';
 import Vector3 from './vector3';
-import BoundingBox from './bounding_box';
 
 export default class GameObject extends EventEmitter {
-  constructor(position = new Vector3(), size = new Vector3(0.5, 0.5, 0.5)) {
+  constructor(position = new Vector3(), model = null) {
     super();
 
     // This allow us to represent objects of other players (or server objects)
@@ -14,22 +13,18 @@ export default class GameObject extends EventEmitter {
     this.velocity = new Vector3();
 
     // Graphic representation, maybe the bounding geometry should be here
-    this.model = null;
-
-    // Calculate default bounding box
-    this.boundingBox =
-      new BoundingBox(this.position.subtract(size.divide(2)), size);
+    this.model = model;
   }
 
   /**
   * Checks if two GameObjects collisioned by checking the intersection of their
-  * BoundingBoxes.
+  * Models.
   * @gameObject(object) another gameObject to check intersection against.
   * @return
-  *   true if BoundingBoxes intersects, flase otherwise.
+  *   true if Models intersects, flase otherwise.
   */
   collision(gameObject) {
-    return this.boundingBox.intersects(gameObject.boundingBox);
+    return this.model.intersects(gameObject.model);
   }
 
   /**
@@ -37,7 +32,9 @@ export default class GameObject extends EventEmitter {
   */
   update(/* time */) {
     this.position = this.position.add(this.velocity);
-    this.boundingBox.position = this.boundingBox.position.add(this.velocity);
+    if (this.model) {
+      this.model.position = this.position;
+    }
   }
 
   /**
