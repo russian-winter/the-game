@@ -9,7 +9,7 @@ export default class Camera extends GameObject {
     // {GameObject}
     this.target = null;
 
-    this.zoom = 20;
+    this.zoom = 50;
   }
 
   /**

@@ -93,8 +93,10 @@ export default class Renderer {
       }
 
       this.context.fillRect(
-        object.boundingBox.position.x * this.scaleFactor,
-        object.boundingBox.position.y * this.scaleFactor,
+        ((object.boundingBox.position.x - game.camera.position.x)
+          + game.camera.zoom) * this.scaleFactor,
+        ((object.boundingBox.position.y - game.camera.position.y)
+          + (game.camera.zoom / 2)) * this.scaleFactor,
         object.boundingBox.size.x * this.scaleFactor,
         object.boundingBox.size.y * this.scaleFactor
       );
