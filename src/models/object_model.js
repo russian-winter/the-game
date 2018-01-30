@@ -4,7 +4,7 @@ import Vector3 from '../game_objects/vector3';
 export default class Model {
   constructor(position = new Vector3()) {
     this.position = position;
-    this.size = new Vector3(0.5, 0.5, 0.5);
+    this.size = new Vector3(10, 10, 0.5);
     this.boundingBox =
       new BoundingBox(position.subtract(this.size.divide(2)), this.size);
   }
@@ -20,12 +20,16 @@ export default class Model {
     return this.boundingBox.intersects(model.boundingBox);
   }
 
-  render(context, scaleFactor) {
-    context.fillRect(
-      this.position.x * scaleFactor,
-      this.position.y * scaleFactor,
-      this.size.x * scaleFactor,
-      this.size.y * scaleFactor
-    );
+  render(context, scaleFactor, camera = null) {
+    if (camera) {
+      context.fillRect(
+        ((this.boundingBox.position.x - camera.position.x)
+          + camera.zoom) * scaleFactor,
+        ((this.boundingBox.position.y - camera.position.y)
+          + (camera.zoom / 2)) * scaleFactor,
+        this.size.x * scaleFactor,
+        this.size.y * scaleFactor
+      );
+    }
   }
 }
