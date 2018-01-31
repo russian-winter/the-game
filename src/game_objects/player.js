@@ -72,12 +72,13 @@ export default class Player extends GameObject {
    */
   shoot() {
     // Bullet volocity is player direction times some factor
-    const speed = 2;
+    const speed = 1 / 10;
     const velocity = this.direction.multiply(speed);
     Bullet.create(
       this.position.add(this.model.size.divide(2)),
-      new Vector3(0.25, 0.25, 0.25),
-      velocity
+      velocity,
+      new Vector3(),
+      Date.now()
     );
   }
 }
