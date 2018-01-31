@@ -39,7 +39,6 @@ export default class GameObject extends EventEmitter {
         this.model.boundingBox.size.multiply(0.5)
       );
     }
-  
   }
 
   /**
