@@ -10,6 +10,7 @@ export default class Player extends GameObject {
     this.direction = new Vector3(1, 0, 0);
     this.health = 10;
     this.shooted = false;
+    this.rotation = 0;
   }
 
   /**
@@ -57,6 +58,10 @@ export default class Player extends GameObject {
       this.shoot(playerInput.shoot);
     }
     this.shooted = playerInput.shoot;
+
+    if (playerInput.rotate) {
+      this.rotation = playerInput.rotation;
+    }
   }
 
   onHit() {
@@ -75,9 +80,14 @@ export default class Player extends GameObject {
     const speed = 2;
     const velocity = this.direction.multiply(speed);
     Bullet.create(
-      this.position.add(this.model.size.divide(2)),
+      this.position,
       new Vector3(0.25, 0.25, 0.25),
       velocity
     );
+  }
+
+  update() {
+    super.update();
+    this.model.rotation = this.rotation;
   }
 }

@@ -22,14 +22,16 @@ export default class Model {
 
   render(context, scaleFactor, camera = null) {
     if (camera) {
-      context.fillRect(
-        ((this.boundingBox.position.x - camera.position.x)
-          + camera.zoom) * scaleFactor,
-        ((this.boundingBox.position.y - camera.position.y)
-          + (camera.zoom / 2)) * scaleFactor,
-        this.size.x * scaleFactor,
-        this.size.y * scaleFactor
-      );
+      const x1 = ((this.boundingBox.position.x - camera.position.x)
+        + camera.zoom) * scaleFactor;
+
+      const y1 = ((this.boundingBox.position.y - camera.position.y)
+        + (camera.zoom / 2)) * scaleFactor;
+
+      const width = this.size.x * scaleFactor;
+      const height = this.size.y * scaleFactor;
+
+      context.fillRect(x1, y1, width, height);
     }
   }
 }
