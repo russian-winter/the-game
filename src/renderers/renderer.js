@@ -1,12 +1,15 @@
 /* eslint-env browser */
 
 import Vector3 from '../game_objects/vector3';
+import Stats from './stats';
 
 export default class Renderer {
   constructor() {
     // DOM object and drawing api refereces
     this.canvas = document.querySelector('canvas');
     this.context = this.canvas.getContext('2d');
+
+    this.statsObject = new Stats();
 
     // Default scale, updated in resize()
     this.scaleFactor = 10;
@@ -93,5 +96,7 @@ export default class Renderer {
       }
       object.model.render(this.context, this.scaleFactor, game.camera);
     });
+
+    this.statsObject.render(this.context, game);
   }
 }
