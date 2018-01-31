@@ -4,7 +4,7 @@ import GameObject from './game_object';
 
 export default class ParametricParticle extends GameObject {
   constructor(position = new Vector3(), velocity = new Vector3(),
-    acceleration = new Vector3(), time = Date.now()) {
+    acceleration = new Vector3(), time) {
     super(position);
     this.initialPosition = position;
     this.initialVelocity = velocity;
@@ -13,9 +13,10 @@ export default class ParametricParticle extends GameObject {
   }
 
   update(time) {
+    const deltaTime = time - this.initialTime;
     this.position = this.initialPosition.add(
-      this.initialVelocity.multiply(time - this.initialTime)
-    );
+      this.initialVelocity.multiply(deltaTime)
+    ).add(this.initialAcceleration.multiply((deltaTime * deltaTime) / 2));
     super.update();
   }
 }
