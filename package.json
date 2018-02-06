@@ -23,5 +23,8 @@
     "eslint-plugin-import": "^2.8.0",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.10.1"
+  },
+  "dependencies": {
+    "three-js": "^79.0.0"
   }
 }
