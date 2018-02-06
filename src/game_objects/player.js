@@ -1,15 +1,16 @@
-import GameObject from './game_object';
+import ParametricParticle from './parametric_particle';
 import Vector3 from './vector3';
 import Bullet from './bullet';
 import PlayerModel from '../models/player_model';
 
-export default class Player extends GameObject {
-  constructor(position, model = new PlayerModel()) {
-    super(position, model);
+export default class Player extends ParametricParticle {
+  constructor(position, velocity, acceleration, time) {
+    super(position, velocity, acceleration, time);
 
     this.direction = new Vector3(1, 0, 0);
     this.health = 10;
     this.shooted = false;
+    this.model = new PlayerModel();
   }
 
   /**
@@ -33,13 +34,15 @@ export default class Player extends GameObject {
   * @playerInput {Object} The keys represent posible actions for a player
   * and the values are boolean and indicate if these actions are active
    */
-  onPlayerInput(playerInput) {
-    this.velocity = new Vector3(
+  onPlayerInput(playerInput, time) {
+    const speed = 10;
+    this.initialVelocity = new Vector3(
       (playerInput.left * -1) + (playerInput.right * 1),
       (playerInput.up * -1) + (playerInput.down * 1),
       0
-    );
-
+    ).normalize().multiply(speed);
+    this.initialTime = time;
+    this.initialPosition = this.position;
     if (playerInput.left) {
       this.direction = new Vector3(-1, 0, 0);
     } else if (playerInput.right) {
@@ -72,13 +75,13 @@ export default class Player extends GameObject {
    */
   shoot() {
     // Bullet volocity is player direction times some factor
-    const speed = 1 / 10;
+    const speed = 5;
     const velocity = this.direction.multiply(speed);
     Bullet.create(
-      this.position.add(this.model.size.divide(2)),
+      this.position,
       velocity,
       new Vector3(),
-      Date.now()
+      Date.now() / 1000
     );
   }
 }

@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
       playerActions[action] = isKeyDown;
     }
 
-    game.player.onPlayerInput(playerActions);
+    game.player.onPlayerInput(playerActions, Date.now() / 1000);
   };
 
   // Listen for user input
