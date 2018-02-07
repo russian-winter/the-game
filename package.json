@@ -5,7 +5,7 @@
   "main": "game.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "\\cp -rfv src/assets dist/ && \\cp -fv src/index.html dist/ && webpack-dev-server --open"
+    "start": "webpack && \\cp -rfv src/assets dist/ && \\cp -fv src/index.html dist/ && node src/server.js"
   },
   "repository": {
     "type": "git",
