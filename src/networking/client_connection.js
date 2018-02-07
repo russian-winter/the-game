@@ -1,21 +1,60 @@
-// main.js
 import SimplePeer from 'simple-peer';
 import io from 'socket.io-client';
 
-// create the WebSocket connection
-const socket = io();
+export default class ClientConnection {
+  constructor() {
+    this.socket = null; // WebSocket for signals exchange
+    this.peer = null; // WebRTC connection
+  }
 
-// Create a WebRTC connection, as the client this will be the initiating leg
-const peer = new SimplePeer({ initiator: true });
+  /*
+  * Starts a connection to the server.
+  * Returns a promise fulfilled when the connection is ready.
+  */
+  connect() {
+    return new Promise((resolve) => {
+      // Create the WebSocket connection
+      this.socket = io();
 
-// When we get a signal, send it over the WebSocket to the server
-peer.on('signal', data => socket.emit('signal', data));
+      // Create a WebRTC connection, this will be the initiating leg
+      this.peer = new SimplePeer({
+        initiator: true,
+        channelConfig: {
+          ordered: false
+        }
+      });
 
-// WebRTC connection is successful!
-peer.on('connect', () => console.log('connected'));
+      // When we get a signal, send it over the WebSocket to the server
+      this.peer.on('signal', data => this.socket.emit('signal', data));
 
-// When we get a signal over the WebSocket from the server,
-// signal the WebRTC connection
-socket.on('signal', data => peer.signal(data));
+      // When we get a signal over the WebSocket from the server,
+      // pass the signal to the WebRTC connection
+      this.socket.on('signal', data => this.peer.signal(data));
 
-window.peer = peer;
+      // Set the handlers for incoming data
+      this.peer.on('data', data => this.onDataReceived(data));
+
+      // WebRTC connection is successful!
+      this.peer.on('connect', () => {
+        // Now we can send data to the server:
+        this.peer.send('Hello from client!');
+        resolve();
+      });
+    });
+  }
+
+  /**
+  * Handles the received data from the server.
+  */
+  onDataReceived(data) {
+    // TODO: do something
+    console.log(data);
+  }
+
+  /**
+  * Sends a message to the server.
+  */
+  send(message) {
+    this.peer.send(message);
+  }
+}
