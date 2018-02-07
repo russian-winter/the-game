@@ -1,9 +1,18 @@
 import Model from './object_model';
 import Vector3 from '../game_objects/vector3';
+import THREE from '../assets/js/three-js/three';
+
 
 export default class BulletModel extends Model {
   constructor(position = new Vector3()) {
     super(position);
     this.size = new Vector3(0.5, 0.5, 0.5);
+  }
+
+  getMesh() {
+    const geometry = new THREE.BoxGeometry(1, 1, 10);
+    const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+    const cube = new THREE.Mesh(geometry, material);
+    return cube;
   }
 }

@@ -1,20 +1,24 @@
 /* eslint-env browser */
 
 import Vector3 from '../game_objects/vector3';
+import THREE from '../assets/js/three-js/three';
 
 export default class Renderer {
   constructor() {
     // DOM object and drawing api refereces
-    this.canvas = document.querySelector('canvas');
-    this.context = this.canvas.getContext('2d');
+    // this.canvas = document.querySelector('canvas');
+    // this.context = this.canvas.getContext('2d');
 
     // Default scale, updated in resize()
     this.scaleFactor = 10;
 
     // Listen for window size change
-    window.addEventListener('resize', () => this.resize());
-    // Adjust the size of the canvas for the first time
-    this.resize();
+    // window.addEventListener('resize', () => this.resize());
+    // // Adjust the size of the canvas for the first time
+    // this.resize();
+    this.renderer = new THREE.WebGLRenderer();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(this.renderer.domElement);
   }
 
   /**
@@ -36,62 +40,15 @@ export default class Renderer {
   /**
   * Draws a frame.
   */
-  render(game) {
-  // Clear canvas and set default color
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-    const step = 10;
-
-    const left = game.camera.position.x - game.camera.zoom;
-    const right = game.camera.position.x + game.camera.zoom;
-    const top = game.camera.position.y - game.camera.zoom;
-    const bottom = game.camera.position.y + game.camera.zoom;
-
-    let xPosition = left;
-    let yPosition = top;
-    let xSize;
-    let ySize;
-
-    while (xPosition < right) {
-      if (xPosition % step !== 0) {
-        xSize = Math.ceil(xPosition / step) * step;
-      } else {
-        xSize = (xPosition + step < right) ? xPosition + step : right;
-      }
-      yPosition = top;
-      while (yPosition < bottom) {
-        if (yPosition % step !== 0) {
-          ySize = Math.ceil(yPosition / step) * step;
-        } else {
-          ySize = (yPosition + step < bottom) ? yPosition + step : bottom;
-        }
-
-        const evenCell = (Math.floor(xPosition / step) % 2 === 0);
-        const evenRow = (Math.floor(yPosition / step) % 2 === 0);
-        const fillColor = ((evenCell && !evenRow) || (!evenCell && evenRow)) ?
-          '#ff4444' : '#4444ff';
-
-        this.context.fillStyle = fillColor;
-        this.context.fillRect(
-          (xPosition - left) * this.scaleFactor,
-          (yPosition - top) * this.scaleFactor,
-          (xSize - xPosition) * this.scaleFactor,
-          (ySize - yPosition) * this.scaleFactor
-        );
-
-        yPosition = ySize;
-      }
-      xPosition = xSize;
-    }
-
-    // Iterate over each world object and draw its bounding box
-    this.context.fillStyle = '#ffffff';
+  render(game, scene, camera) {
     game.world.objects.forEach((object) => {
       if (!object.model) {
         // Do not render invisible objects!
         return;
       }
-      object.model.render(this.context, this.scaleFactor, game.camera);
+      object.model.addToScene(scene);
+      object.model.animate();
     });
+    this.renderer.render(scene, camera);
   }
 }

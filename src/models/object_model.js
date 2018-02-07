@@ -1,5 +1,7 @@
 import BoundingBox from '../game_objects/bounding_box';
 import Vector3 from '../game_objects/vector3';
+import THREE from '../assets/js/three-js/three';
+
 
 export default class Model {
   constructor(position = new Vector3()) {
@@ -7,6 +9,8 @@ export default class Model {
     this.size = new Vector3(10, 10, 0.5);
     this.boundingBox =
       new BoundingBox(position.subtract(this.size.divide(2)), this.size);
+    this.addedToScene = false;
+    this.mesh = this.getMesh();
   }
 
   /**
@@ -20,16 +24,22 @@ export default class Model {
     return this.boundingBox.intersects(model.boundingBox);
   }
 
-  render(context, scaleFactor, camera = null) {
-    if (camera) {
-      context.fillRect(
-        ((this.boundingBox.position.x - camera.position.x)
-          + camera.zoom) * scaleFactor,
-        ((this.boundingBox.position.y - camera.position.y)
-          + (camera.zoom / 2)) * scaleFactor,
-        this.size.x * scaleFactor,
-        this.size.y * scaleFactor
-      );
+  getMesh() {
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const cube = new THREE.Mesh(geometry, material);
+    return cube;
+  }
+
+  animate() {
+    this.mesh.rotation.x += 0.1;
+    this.mesh.rotation.y += 0.1;
+  }
+
+  addToScene(scene) {
+    if (!this.addedToScene) {
+      scene.add(this.mesh);
+      this.addedToScene = true;
     }
   }
 }

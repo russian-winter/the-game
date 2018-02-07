@@ -1,6 +1,8 @@
 /* eslint-env browser */
 import Game from './game';
 import Renderer from './renderers/renderer';
+import THREE from './assets/js/three-js/three';
+
 
 // Wait for everything to load...
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,15 +11,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize renderer
   const renderer = new Renderer();
-
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+  camera.position.z = 5;
   // Debug helper
   window.game = game;
-
   // Game loop definition
   const update = () => {
     game.update();
-    renderer.render(game);
-    window.requestAnimationFrame(update);
+    requestAnimationFrame(update);
+    renderer.render(game, scene, camera);
+    // window.requestAnimationFrame(update);
   };
 
   // Start game loop!
