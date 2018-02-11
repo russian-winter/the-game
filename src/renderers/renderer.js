@@ -1,5 +1,4 @@
 /* eslint-env browser */
-
 import THREE from '../assets/js/three-js/three';
 
 export default class Renderer {
@@ -19,7 +18,7 @@ export default class Renderer {
         return;
       }
       object.model.addToScene(scene);
-      object.model.animate();
+      object.model.animate(object.position);
     });
     this.renderer.render(scene, camera);
   }

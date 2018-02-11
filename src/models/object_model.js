@@ -31,9 +31,10 @@ export default class Model {
     return cube;
   }
 
-  animate() {
-    this.mesh.rotation.x += 0.1;
-    this.mesh.rotation.y += 0.1;
+  animate(position) {
+    this.mesh.position.x = position.x;
+    this.mesh.position.y = position.y;
+    this.mesh.position.z = position.z;
   }
 
   addToScene(scene) {
