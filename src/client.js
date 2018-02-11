@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
     game.update();
     requestAnimationFrame(update);
     renderer.render(game, scene, camera);
-    // window.requestAnimationFrame(update);
   };
 
   // Start game loop!
