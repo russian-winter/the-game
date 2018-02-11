@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     0.1,
     1000
   );
-  camera.position.z = 5;
+  camera.position.z = 10;
   // Debug helper
   window.game = game;
   // Game loop definition

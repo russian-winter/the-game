@@ -10,7 +10,7 @@ export default class BulletModel extends Model {
   }
 
   getMesh() {
-    const geometry = new THREE.BoxGeometry(1, 1, 10);
+    const geometry = new THREE.BoxGeometry(0.2, 0.05, 0.05);
     const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
     const cube = new THREE.Mesh(geometry, material);
     return cube;
