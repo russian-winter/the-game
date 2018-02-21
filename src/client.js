@@ -88,4 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('mousemove', (e) => { registerInput(e); });
   document.addEventListener('mouseup', (e) => { registerInput(e); });
   document.addEventListener('mousedown', (e) => { registerInput(e); });
+  window.addEventListener(
+    'resize',
+    (e) => { game.camera.onWindowResize(e); }
+  );
 });
