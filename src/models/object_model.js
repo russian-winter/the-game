@@ -1,6 +1,8 @@
 import BoundingBox from '../game_objects/bounding_box';
 import Vector3 from '../game_objects/vector3';
-import THREE from '../assets/js/three-js/three';
+import {
+  BoxGeometry, MeshBasicMaterial, Mesh
+} from '../assets/js/three-js/three';
 
 
 export default class Model {
@@ -25,9 +27,9 @@ export default class Model {
   }
 
   getMesh() {
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
+    const geometry = new BoxGeometry(1, 1, 1);
+    const material = new MeshBasicMaterial({ color: 0x00ff00 });
+    const cube = new Mesh(geometry, material);
     return cube;
   }
 
