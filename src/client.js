@@ -54,6 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const isKeyDown = e.type === 'keydown';
     const action = keyBindings[e.keyCode];
 
+    // assume the player is not shooting
+    playerActions.shoot = false;
+
     if (action) {
       playerActions[action] = isKeyDown;
     }
@@ -63,8 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
       playerActions.rotate = true;
 
       // Calculate angle relative to screen center
-      playerActions.rotation = Math.atan2(e.clientY - (window.innerHeight / 2),
-        e.clientX - (window.innerWidth / 2));
+      playerActions.rotation = Math.atan2(
+        e.clientY - (window.innerHeight / 2),
+        e.clientX - (window.innerWidth / 2)
+      );
+    } else if (e.type === 'click') {
+      playerActions.shoot = true;
     }
 
     game.player.onPlayerInput(playerActions);
@@ -74,4 +81,5 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', (e) => { registerInput(e); });
   document.addEventListener('keyup', (e) => { registerInput(e); });
   document.addEventListener('mousemove', (e) => { registerInput(e); });
+  document.addEventListener('click', (e) => { registerInput(e); });
 });

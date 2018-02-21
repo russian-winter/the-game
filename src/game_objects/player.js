@@ -9,8 +9,19 @@ export default class Player extends GameObject {
 
     this.direction = new Vector3(1, 0, 0);
     this.health = 10;
-    this.shooted = false;
+    this.shootedAt = null;
     this.rotation = 0;
+    this.millisecondsToReload = 150;
+  }
+
+  /**
+  * Returns if the player can shoot at this moment
+  */
+  canShoot() {
+    if (this.shootedAt === null) {
+      return true;
+    }
+    return (new Date() - this.shootedAt) > this.millisecondsToReload;
   }
 
   /**
@@ -54,10 +65,9 @@ export default class Player extends GameObject {
     }
 
     // Shoot only once per action
-    if (playerInput.shoot && !this.shooted) {
+    if (playerInput.shoot && this.canShoot()) {
       this.shoot(playerInput.shoot);
     }
-    this.shooted = playerInput.shoot;
 
     if (playerInput.rotate) {
       this.rotation = playerInput.rotation;
@@ -76,6 +86,8 @@ export default class Player extends GameObject {
    * Shoots a bullet in the direction the player is facing.
    */
   shoot() {
+    this.shootedAt = new Date();
+
     // Bullet volocity is player direction times some factor
     const speed = 2;
     const bulletVelocity = new Vector3(
