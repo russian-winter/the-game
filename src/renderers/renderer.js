@@ -1,7 +1,5 @@
 /* eslint-env browser */
 
-import Vector3 from '../game_objects/vector3';
-
 export default class Renderer {
   constructor() {
     // DOM object and drawing api refereces

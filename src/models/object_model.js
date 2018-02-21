@@ -2,9 +2,9 @@ import BoundingBox from '../game_objects/bounding_box';
 import Vector3 from '../game_objects/vector3';
 
 export default class Model {
-  constructor(position = new Vector3()) {
+  constructor(position = new Vector3(), size = new Vector3(10, 10, 0.5)) {
     this.position = position;
-    this.size = new Vector3(10, 10, 0.5);
+    this.size = size;
     this.boundingBox =
       new BoundingBox(position.subtract(this.size.divide(2)), this.size);
   }
