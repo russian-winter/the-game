@@ -29,7 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
     down: false,
     right: false,
     left: false,
-    shoot: false
+    shoot: false,
+    rotate: false,
+    rotation: 0
   };
 
   // Player actions associated with each keyCode
@@ -44,16 +46,37 @@ document.addEventListener('DOMContentLoaded', () => {
     87: 'up',
     65: 'left',
     83: 'down',
-    68: 'right'
+    68: 'right',
+    // mouse
+    mouseup: 'shoot',
+    mousedown: 'shoot'
   };
 
   // Handler for user input
   const registerInput = (e) => {
-    const isKeyDown = e.type === 'keydown';
-    const action = keyBindings[e.keyCode];
+    const isKeyDown = e.type === 'keydown' || e.type === 'mousedown';
+    const action = keyBindings[e.keyCode] || keyBindings[e.type];
 
     if (action) {
       playerActions[action] = isKeyDown;
+    }
+
+    // Handle mouse input
+    if (e.type === 'mousemove') {
+      playerActions.rotate = true;
+
+      const playerOffsetX = (
+        game.player.position.x - game.camera.position.x
+      ) * renderer.scaleFactor;
+      const playerOffsetY = (
+        game.player.position.y - game.camera.position.y
+      ) * renderer.scaleFactor;
+
+      // Calculate angle relative to screen center
+      playerActions.rotation = Math.atan2(
+        (e.clientY - ((window.innerHeight) / 2)) - playerOffsetY,
+        (e.clientX - ((window.innerWidth) / 2)) - playerOffsetX
+      );
     }
 
     game.player.onPlayerInput(playerActions);
@@ -62,4 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Listen for user input
   document.addEventListener('keydown', (e) => { registerInput(e); });
   document.addEventListener('keyup', (e) => { registerInput(e); });
+  document.addEventListener('mousemove', (e) => { registerInput(e); });
+  document.addEventListener('mouseup', (e) => { registerInput(e); });
+  document.addEventListener('mousedown', (e) => { registerInput(e); });
+  window.addEventListener(
+    'resize',
+    (e) => { game.camera.onWindowResize(e); }
+  );
 });
