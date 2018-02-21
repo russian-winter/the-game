@@ -1,10 +1,12 @@
 const SimplePeer = require('simple-peer');
 const SocketIo = require('socket.io');
 const wrtc = require('wrtc');
+const Message = require('./message');
 
 class ServerConnection {
-  constructor() {
+  constructor(onMessageHandler) {
     this.peers = [];
+    this.onMessageHandler = onMessageHandler;
   }
 
   /**
@@ -48,8 +50,10 @@ class ServerConnection {
   */
   onDataReceived(data, peer) {
     console.log(
-      `New data from ${peer.remoteAddress}:${peer.remotePort} - ${data}`
+      `New data from ${peer.remoteAddress}:${peer.remotePort}`
     );
+    const message = new Message(data);
+    this.onMessageHandler(message);
   }
 }
 

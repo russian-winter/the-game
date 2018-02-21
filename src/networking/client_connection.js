@@ -1,6 +1,8 @@
 import SimplePeer from 'simple-peer';
 import io from 'socket.io-client';
 
+const Message = require('./message');
+
 export default class ClientConnection {
   constructor() {
     this.socket = null; // WebSocket for signals exchange
@@ -37,7 +39,9 @@ export default class ClientConnection {
       // WebRTC connection is successful!
       this.peer.on('connect', () => {
         // Now we can send data to the server:
-        this.peer.send('Hello from client!');
+        this.peer.send(
+          Message.fromKindCode(Message.kindCodes.clientHello).data
+        );
         resolve();
       });
     });
@@ -49,6 +53,7 @@ export default class ClientConnection {
   onDataReceived(data) {
     // TODO: do something
     console.log(data);
+    new Message(data);
   }
 
   /**

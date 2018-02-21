@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize game objects
   const game = new Game(false);
   const player = game.createPlayer();
-  // const connection = new ClientConnection();
-  // connection.connect();
 
   // Initialize connection to the server
   const connection = new ClientConnection();

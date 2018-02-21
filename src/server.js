@@ -12,7 +12,9 @@ const app = express();
 const server = Server(app);
 
 // Attach the game server to the http server
-const gameServer = new GameServer();
+const gameServer = new GameServer((message) => {
+  console.log(message);
+});
 gameServer.listen(server);
 
 // Serve static assets
