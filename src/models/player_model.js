@@ -13,7 +13,7 @@ export default class PlayerModel extends Model {
         + camera.zoom) * scaleFactor;
 
       const y1 = ((this.position.y - camera.position.y)
-        + (camera.zoom / 2)) * scaleFactor;
+        + camera.zoom) * scaleFactor;
 
       const width = this.size.x * scaleFactor;
       const height = this.size.y * scaleFactor;
