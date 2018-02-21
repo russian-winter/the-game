@@ -46,16 +46,16 @@ document.addEventListener('DOMContentLoaded', () => {
     87: 'up',
     65: 'left',
     83: 'down',
-    68: 'right'
+    68: 'right',
+    // mouse
+    mouseup: 'shoot',
+    mousedown: 'shoot'
   };
 
   // Handler for user input
   const registerInput = (e) => {
-    const isKeyDown = e.type === 'keydown';
-    const action = keyBindings[e.keyCode];
-
-    // assume the player is not shooting
-    playerActions.shoot = false;
+    const isKeyDown = e.type === 'keydown' || e.type === 'mousedown';
+    const action = keyBindings[e.keyCode] || keyBindings[e.type];
 
     if (action) {
       playerActions[action] = isKeyDown;
@@ -77,8 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
         (e.clientY - ((window.innerHeight) / 2)) - playerOffsetY,
         (e.clientX - ((window.innerWidth) / 2)) - playerOffsetX
       );
-    } else if (e.type === 'click') {
-      playerActions.shoot = true;
     }
 
     game.player.onPlayerInput(playerActions);
@@ -88,5 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', (e) => { registerInput(e); });
   document.addEventListener('keyup', (e) => { registerInput(e); });
   document.addEventListener('mousemove', (e) => { registerInput(e); });
-  document.addEventListener('click', (e) => { registerInput(e); });
+  document.addEventListener('mouseup', (e) => { registerInput(e); });
+  document.addEventListener('mousedown', (e) => { registerInput(e); });
 });
