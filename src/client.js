@@ -65,10 +65,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.type === 'mousemove') {
       playerActions.rotate = true;
 
+      const playerOffsetX = (
+        game.player.position.x - game.camera.position.x
+      ) * renderer.scaleFactor;
+      const playerOffsetY = (
+        game.player.position.y - game.camera.position.y
+      ) * renderer.scaleFactor;
+
       // Calculate angle relative to screen center
       playerActions.rotation = Math.atan2(
-        e.clientY - (window.innerHeight / 2),
-        e.clientX - (window.innerWidth / 2)
+        (e.clientY - ((window.innerHeight) / 2)) - playerOffsetY,
+        (e.clientX - ((window.innerWidth) / 2)) - playerOffsetX
       );
     } else if (e.type === 'click') {
       playerActions.shoot = true;
