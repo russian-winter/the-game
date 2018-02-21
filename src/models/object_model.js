@@ -23,10 +23,10 @@ export default class Model {
   render(context, scaleFactor, camera = null) {
     if (camera) {
       const x1 = ((this.position.x - camera.position.x)
-        + camera.zoom) * scaleFactor;
+        + camera.zoomX) * scaleFactor;
 
       const y1 = ((this.position.y - camera.position.y)
-        + camera.zoom) * scaleFactor;
+        + camera.zoomY) * scaleFactor;
 
       const width = this.size.x * scaleFactor;
       const height = this.size.y * scaleFactor;

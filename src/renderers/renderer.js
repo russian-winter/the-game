@@ -40,10 +40,10 @@ export default class Renderer {
 
     const step = 10;
 
-    const left = game.camera.position.x - game.camera.zoom;
-    const right = game.camera.position.x + game.camera.zoom;
-    const top = game.camera.position.y - game.camera.zoom;
-    const bottom = game.camera.position.y + game.camera.zoom;
+    const left = game.camera.position.x - game.camera.zoomX;
+    const right = game.camera.position.x + game.camera.zoomX;
+    const top = game.camera.position.y - game.camera.zoomY;
+    const bottom = game.camera.position.y + game.camera.zoomY;
 
     let xPosition = left;
     let yPosition = top;
