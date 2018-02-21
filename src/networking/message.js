@@ -2,19 +2,28 @@
 * The idea of this class is to abstract the message implementation from the
 * logic that handles the messages. So no other class should be aware of the
 * low level objects that are used. This means that there should be no references
-* to Buffers (for messages in the node side) or to UInt8Array (for the messages
+* to Buffers (for messages in the node side) or to Uint8Array (for the messages
 * in the browser side), they sould be handled using Message methods.
 */
 class Message {
+  /**
+  * Creates a new message from data received from webrt.
+  * @data {Buffer|Uint8Array} The data received from peer.on('data', ...).
+  */
   constructor(data) {
-    this.data = data;
-    console.log(data);
-
     if (data.constructor === Buffer) {
+      // We are on the server side, SimplePeer returns a Buffer
+      this.arrayBuffer = data.buffer; // This is an ArrayBuffer!
       this.isServer = true;
     } else {
+      // We are on the client side, data is  an Uint8Array
+      this.arrayBuffer = data.buffer; // Magic, this is an ArrayBuffer too!
       this.isServer = false;
     }
+
+    // Create some data views so we can do.. things (array buffers)
+    this.dataView = new DataView(this.arrayBuffer);
+    this.payload = new DataView(this.arrayBuffer, 1);
   }
 
   /**
@@ -23,7 +32,7 @@ class Message {
   * @return {number} The message king.
   */
   get kind() {
-    return this.data[0];
+    return this.dataView.getUint8(0);
   }
 
   /**
@@ -31,19 +40,23 @@ class Message {
   * @value {number} A value from Message.kindCodes.
   */
   set kind(value) {
-    this.data[0] = value;
+    this.dataView.setUint8(0, value);
   }
 
   /**
-  * Returns the payload of the message.
-  * @return {object} A Buffer for server side calls. UInt8Array in broswers.
+  * Returns the buffer used on the CLIENT SIDE to send a message to the server.
+  * Do not call this method on the server side.
   */
-  get payload() {
-    if (this.isServer) {
-      return Buffer.from(this.data, 1);
-    }
-    // eslint-disable-next-line
-    return new UInt8Array(this.data, 1);
+  getClientBuffer() {
+    return new Uint8Array(this.arrayBuffer);
+  }
+
+  /**
+  * Returns the buffer used on the SERVER SIDE to send a message to the clients.
+  * Do not call this method on the client side.
+  */
+  getServerBuffer() {
+    return Buffer.from(this.arrayBuffer);
   }
 
   /**
@@ -51,31 +64,46 @@ class Message {
   * for messages without payload.
   */
   static fromKindCode(code) {
-    let data = null;
     const size = 1;
+    const data = new Uint8Array(size);
+    const message = new Message(data);
+    message.kind = code;
 
-    if (Buffer) {
-      data = Buffer.alloc(size);
-    } else {
-      // eslint-disable-next-line
-      data = new UInt8Array(size);
+    return message;
+  }
+
+  /**
+  * Avoid this method. Returns the name of a given kind code.
+  * It's slow, but useful for debug.
+  * @code {number} A kind code from Message.kindCodes.
+  * @return {string} The name of the kind from Message.kindCodes.
+  */
+  static kindNameFromKindCode(code) {
+    const kinds = Object.keys(Message.kindCodes);
+    for (let i = 0; i < kinds.length; ++i) {
+      if (Message.kindCodes[kinds[i]] === code) {
+        return kinds[i];
+      }
     }
 
-    data[0] = code;
-    return new Message(data);
+    return `Unknown code (${code})`;
   }
 }
 
 // Message kinds
 Message.kindCodes = {
-  // 0x00 - 0x0F: reserved
-  // 0x10 - 0x1F: client-server synchronization
-  clientHello: 0x10,
-  serverHello: 0x11,
-  clientGameTimeRequest: 0x12,
-  serverGameTimeResponse: 0x13,
+  // 0x00 - 0x1F: [Network] Control messages, the game doesn't know
+  clientHello: 0x01,
+  serverHello: 0x02,
+  // TODO: keepalive, ping, kick, disconnect
 
-  // 0x40 - 0xFF: game object synchronization
+  // 0x20 - 0x3F: [Game] client-server synchronization
+  clientJoinRequest: 0x20,
+  serverJoinResponse: 0x21,
+  clientGameTimeRequest: 0x22,
+  serverGameTimeResponse: 0x23,
+
+  // 0x40 - 0xFF: [GameObjects] game object synchronization
   clientCreateObject: 0x40,
   serverCreateObject: 0x41,
   clientUpdateObject: 0x42,

@@ -41,6 +41,9 @@ export default class Renderer {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     const step = 10;
+    if (!game.camera) {
+      return;
+    }
 
     const left = game.camera.position.x - game.camera.zoom;
     const right = game.camera.position.x + game.camera.zoom;

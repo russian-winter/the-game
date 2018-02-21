@@ -4,9 +4,10 @@ import io from 'socket.io-client';
 const Message = require('./message');
 
 export default class ClientConnection {
-  constructor() {
+  constructor(onMessageHandler) {
     this.socket = null; // WebSocket for signals exchange
     this.peer = null; // WebRTC connection
+    this.onMessageHandler = onMessageHandler;
   }
 
   /*
@@ -39,9 +40,7 @@ export default class ClientConnection {
       // WebRTC connection is successful!
       this.peer.on('connect', () => {
         // Now we can send data to the server:
-        this.peer.send(
-          Message.fromKindCode(Message.kindCodes.clientHello).data
-        );
+        this.send(Message.fromKindCode(Message.kindCodes.clientHello));
         resolve();
       });
     });
@@ -49,17 +48,19 @@ export default class ClientConnection {
 
   /**
   * Handles the received data from the server.
+  * @data {Uint8Array} The raw data received.
   */
   onDataReceived(data) {
-    // TODO: do something
-    console.log(data);
-    new Message(data);
+    const message = new Message(data);
+    console.log(`Received: ${Message.kindNameFromKindCode(message.kind)}`);
+    this.onMessageHandler(message);
   }
 
   /**
   * Sends a message to the server.
+  * @message {Message} The message to be sent.
   */
   send(message) {
-    this.peer.send(message);
+    this.peer.send(message.getClientBuffer());
   }
 }

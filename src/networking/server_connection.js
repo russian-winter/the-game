@@ -45,15 +45,36 @@ class ServerConnection {
 
   /**
   * Handles incoming data from a peer.
-  * @data {Buffer} The data received.
+  * @data {Buffer} The raw data received.
   * @peer {SimplePeer} The peer that sent the data.
   */
   onDataReceived(data, peer) {
-    console.log(
-      `New data from ${peer.remoteAddress}:${peer.remotePort}`
-    );
     const message = new Message(data);
-    this.onMessageHandler(message);
+    console.log(
+      `New data from ${peer.remoteAddress}:${peer.remotePort} - ${
+        Message.kindNameFromKindCode(message.kind)}`
+    );
+    this.onMessageHandler(message, peer);
+  }
+
+  /**
+  * Sends a message to a client.
+  * @message {Message} The message to be sent.
+  * @peer {SimplePeer} The destination of the message.
+  */
+  send(message, peer) {
+    peer.send(message.getServerBuffer());
+  }
+
+  /**
+  * Sends a message to every client. It's not a real broadcast but a
+  * lot of messages.
+  * @message {Message} The message to be sent.
+  */
+  broadcast(message) {
+    for (let i = 0; i < this.peers.length; ++i) {
+      this.peers[i].send(message.getServerBuffer());
+    }
   }
 }
 

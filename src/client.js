@@ -6,12 +6,7 @@ import ClientConnection from './networking/client_connection';
 // Wait for everything to load...
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize game objects
-  const game = new Game(false);
-  const player = game.createPlayer();
-
-  // Initialize connection to the server
-  const connection = new ClientConnection();
-  connection.connect();
+  const game = new Game(ClientConnection, null);
 
   // Initialize renderer
   const renderer = new Renderer();

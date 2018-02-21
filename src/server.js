@@ -1,7 +1,8 @@
 const express = require('express');
 const { Server } = require('http');
 
-// import Game from './game';
+// TODO: Fix this. Find a way to require the Game
+const Game = require('./game');
 const GameServer = require('./networking/server_connection');
 
 // TODO: read this from process arguments
@@ -15,6 +16,8 @@ const server = Server(app);
 const gameServer = new GameServer((message) => {
   console.log(message);
 });
+const game = new Game(null, gameServer);
+
 gameServer.listen(server);
 
 // Serve static assets
