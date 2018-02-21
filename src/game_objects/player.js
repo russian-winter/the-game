@@ -14,7 +14,7 @@ export default class Player extends GameObject {
     this.shooted = false;
     this.rotation = 0;
 
-    this.shootingAudio = new Audio('../assets/sounds/shoot.wav');
+    this.shootingAudio = new Audio('../../the-game-assets/sounds/shoot.wav');
   }
 
   /**
