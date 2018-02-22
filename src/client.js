@@ -13,16 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Debug helper
   window.game = game;
 
-  // Game loop definition
-  const update = () => {
-    game.update();
-    renderer.render(game);
-    window.requestAnimationFrame(update);
-  };
-
-  // Start game loop!
-  update();
-
   // Actions the player is performing
   const playerActions = {
     up: false,
@@ -33,6 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
     rotate: false,
     rotation: 0
   };
+
+  // Game loop definition
+  const update = () => {
+    game.player.onPlayerInput(playerActions);
+    game.update();
+    renderer.render(game);
+    window.requestAnimationFrame(update);
+  };
+
+  // Start game loop!
+  update();
 
   // Player actions associated with each keyCode
   const keyBindings = {
@@ -78,8 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
         (e.clientX - ((window.innerWidth) / 2)) - playerOffsetX
       );
     }
-
-    game.player.onPlayerInput(playerActions);
   };
 
   // Listen for user input
