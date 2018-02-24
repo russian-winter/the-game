@@ -1,11 +1,11 @@
-import GameObject from './game_object';
+import ParametricParticle from './parametric_particle';
 import Vector3 from './vector3';
 import BulletModel from '../models/bullet_model';
 
-export default class Bullet extends GameObject {
-  constructor(position, size, velocity = new Vector3(0.5, 0, 0)) {
-    super(position, size);
-
+export default class Bullet extends ParametricParticle {
+  constructor(position, velocity = new Vector3(0.5, 0, 0),
+    acceleration = new Vector3(), time) {
+    super(position, velocity, acceleration, time);
     this.velocity = velocity;
 
     // model

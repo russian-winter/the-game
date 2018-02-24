@@ -2,6 +2,7 @@ import EventEmitter from './game_objects/event_emitter';
 import World from './game_objects/world';
 import Player from './game_objects/player';
 import Camera from './game_objects/camera';
+import Vector3 from './game_objects/vector3';
 
 export default class Game extends EventEmitter {
   constructor(isServer) {
@@ -17,7 +18,9 @@ export default class Game extends EventEmitter {
       this.clients = []; // references to the clients
     } else {
       this.server = null; // a reference to the server
-      this.player = this.createPlayer(); // the current player
+      this.player = this.createPlayer(
+        new Vector3(), new Vector3(), new Vector3(), Date.now() / 1000
+      ); // the current player
       this.camera = Camera.create(); // the current camera
       this.camera.target = this.player;
     }
@@ -28,11 +31,11 @@ export default class Game extends EventEmitter {
   * When running on a server, it sends updates to the clients.
   */
   update() {
-    const time = Date.now();
+    const time = Date.now() / 1000;
     this.world.update(time);
 
     if (this.isServer) {
-      this.clients.forEach(client => client.update());
+      this.clients.forEach(client => client.update(time));
     }
   }
 

@@ -2,7 +2,7 @@ import EventEmitter from './event_emitter';
 import Vector3 from './vector3';
 
 export default class GameObject extends EventEmitter {
-  constructor(position = new Vector3(), model = null) {
+  constructor(position = new Vector3()) {
     super();
 
     // This allow us to represent objects of other players (or server objects)
@@ -13,7 +13,7 @@ export default class GameObject extends EventEmitter {
     this.velocity = new Vector3();
 
     // Graphic representation, maybe the bounding geometry should be here
-    this.model = model;
+    this.model = null;
   }
 
   /**
@@ -39,7 +39,6 @@ export default class GameObject extends EventEmitter {
         this.model.boundingBox.size.multiply(0.5)
       );
     }
-  
   }
 
   /**

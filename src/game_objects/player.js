@@ -1,15 +1,28 @@
-import GameObject from './game_object';
+import ParametricParticle from './parametric_particle';
 import Vector3 from './vector3';
 import Bullet from './bullet';
 import PlayerModel from '../models/player_model';
 
-export default class Player extends GameObject {
-  constructor(position, model = new PlayerModel()) {
-    super(position, model);
+export default class Player extends ParametricParticle {
+  constructor(position, velocity, acceleration, time) {
+    super(position, velocity, acceleration, time);
 
     this.direction = new Vector3(1, 0, 0);
     this.health = 10;
-    this.shooted = false;
+    this.model = new PlayerModel();
+    this.shootedAt = null;
+    this.rotation = 0;
+    this.millisecondsToReload = 150;
+  }
+
+  /**
+  * Returns if the player can shoot at this moment
+  */
+  canShoot() {
+    if (this.shootedAt === null) {
+      return true;
+    }
+    return (new Date() - this.shootedAt) > this.millisecondsToReload;
   }
 
   /**
@@ -33,13 +46,15 @@ export default class Player extends GameObject {
   * @playerInput {Object} The keys represent posible actions for a player
   * and the values are boolean and indicate if these actions are active
    */
-  onPlayerInput(playerInput) {
-    this.velocity = new Vector3(
+  onPlayerInput(playerInput, time) {
+    const speed = 10;
+    this.initialVelocity = new Vector3(
       (playerInput.left * -1) + (playerInput.right * 1),
       (playerInput.up * -1) + (playerInput.down * 1),
       0
-    );
-
+    ).normalize().multiply(speed);
+    this.initialTime = time;
+    this.initialPosition = this.position;
     if (playerInput.left) {
       this.direction = new Vector3(-1, 0, 0);
     } else if (playerInput.right) {
@@ -53,10 +68,13 @@ export default class Player extends GameObject {
     }
 
     // Shoot only once per action
-    if (playerInput.shoot && !this.shooted) {
+    if (playerInput.shoot && this.canShoot()) {
       this.shoot(playerInput.shoot);
     }
-    this.shooted = playerInput.shoot;
+
+    if (playerInput.rotate) {
+      this.rotation = playerInput.rotation;
+    }
   }
 
   onHit() {
@@ -71,13 +89,25 @@ export default class Player extends GameObject {
    * Shoots a bullet in the direction the player is facing.
    */
   shoot() {
+    this.shootedAt = new Date();
+
     // Bullet volocity is player direction times some factor
     const speed = 2;
-    const velocity = this.direction.multiply(speed);
+    const bulletVelocity = new Vector3(
+      Math.cos(this.rotation) * speed,
+      Math.sin(this.rotation) * speed,
+      0
+    ).add(this.velocity);
     Bullet.create(
-      this.position.add(this.model.size.divide(2)),
+      this.position,
       new Vector3(0.25, 0.25, 0.25),
-      velocity
+      bulletVelocity,
+      Date.now() / 1000
     );
+  }
+
+  update(time) {
+    super.update(time);
+    this.model.rotation = this.rotation;
   }
 }

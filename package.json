@@ -5,7 +5,8 @@
   "main": "game.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "\\cp -rfv src/assets dist/ && \\cp -fv src/index.html dist/ && webpack-dev-server --open"
+    "start": "\\cp -rfv src/assets dist/ && \\cp -fv src/index.html dist/ && webpack-dev-server --open",
+    "winstart": "xcopy /E /Y src\\assets dist\\assets\\ && xcopy /Y src\\index.html dist\\ && webpack-dev-server --open"
   },
   "repository": {
     "type": "git",
