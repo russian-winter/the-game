@@ -1,5 +1,5 @@
+/* eslint-env browser */
 import GameObject from './game_object';
-import Vector3 from './vector3';
 
 
 export default class Camera extends GameObject {
@@ -10,6 +10,21 @@ export default class Camera extends GameObject {
     this.target = null;
 
     this.zoom = 50;
+    this.zoomX = this.zoom;
+    this.zoomY = this.zoom;
+
+    if (window.innerWidth > window.innerHeight) {
+      this.zoomY *= (window.innerHeight / window.innerWidth);
+    }
+  }
+
+  /**
+  * handles window resize
+  */
+  onWindowResize() {
+    if (window.innerWidth > window.innerHeight) {
+      this.zoomY = this.zoomX * (window.innerHeight / window.innerWidth);
+    }
   }
 
   /**

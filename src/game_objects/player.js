@@ -9,8 +9,20 @@ export default class Player extends ParametricParticle {
 
     this.direction = new Vector3(1, 0, 0);
     this.health = 10;
-    this.shooted = false;
     this.model = new PlayerModel();
+    this.shootedAt = null;
+    this.rotation = 0;
+    this.millisecondsToReload = 150;
+  }
+
+  /**
+  * Returns if the player can shoot at this moment
+  */
+  canShoot() {
+    if (this.shootedAt === null) {
+      return true;
+    }
+    return (new Date() - this.shootedAt) > this.millisecondsToReload;
   }
 
   /**
@@ -56,10 +68,13 @@ export default class Player extends ParametricParticle {
     }
 
     // Shoot only once per action
-    if (playerInput.shoot && !this.shooted) {
+    if (playerInput.shoot && this.canShoot()) {
       this.shoot(playerInput.shoot);
     }
-    this.shooted = playerInput.shoot;
+
+    if (playerInput.rotate) {
+      this.rotation = playerInput.rotation;
+    }
   }
 
   onHit() {
@@ -74,14 +89,25 @@ export default class Player extends ParametricParticle {
    * Shoots a bullet in the direction the player is facing.
    */
   shoot() {
+    this.shootedAt = new Date();
+
     // Bullet volocity is player direction times some factor
-    const speed = 5;
-    const velocity = this.direction.multiply(speed);
+    const speed = 2;
+    const bulletVelocity = new Vector3(
+      Math.cos(this.rotation) * speed,
+      Math.sin(this.rotation) * speed,
+      0
+    ).add(this.velocity);
     Bullet.create(
       this.position,
-      velocity,
-      new Vector3(),
+      new Vector3(0.25, 0.25, 0.25),
+      bulletVelocity,
       Date.now() / 1000
     );
+  }
+
+  update(time) {
+    super.update(time);
+    this.model.rotation = this.rotation;
   }
 }
