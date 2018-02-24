@@ -13,6 +13,15 @@ export default class Player extends ParametricParticle {
     this.shootedAt = null;
     this.rotation = 0;
     this.millisecondsToReload = 150;
+
+    // Actions the player is performing
+    this.playerActions = {
+      up: false,
+      down: false,
+      right: false,
+      left: false,
+      shoot: false
+    };
   }
 
   /**
@@ -70,10 +79,6 @@ export default class Player extends ParametricParticle {
     // Shoot only once per action
     if (playerInput.shoot && this.canShoot()) {
       this.shoot(playerInput.shoot);
-    }
-
-    if (playerInput.rotate) {
-      this.rotation = playerInput.rotation;
     }
   }
 

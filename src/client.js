@@ -13,17 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Debug helper
   window.game = game;
 
-  // Actions the player is performing
-  const playerActions = {
-    up: false,
-    down: false,
-    right: false,
-    left: false,
-    shoot: false,
-    rotate: false,
-    rotation: 0
-  };
-
   // Game loop definition
   const update = () => {
     game.update();
@@ -58,36 +47,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const action = keyBindings[e.keyCode] || keyBindings[e.type];
 
     if (action) {
-      playerActions[action] = isKeyDown;
+      game.player.playerActions[action] = isKeyDown;
     }
 
-    game.player.onPlayerInput(playerActions, Date.now() / 1000);
+    game.player.onPlayerInput(game.player.playerActions, Date.now() / 1000);
+  };
 
-    // Handle mouse input
-    if (e.type === 'mousemove') {
-      playerActions.rotate = true;
+  // Handler for mousemove
+  const handleMouseMove = (e) => {
+    const playerOffsetX = (
+      game.player.position.x - game.camera.position.x
+    ) * renderer.scaleFactor;
+    const playerOffsetY = (
+      game.player.position.y - game.camera.position.y
+    ) * renderer.scaleFactor;
 
-      const playerOffsetX = (
-        game.player.position.x - game.camera.position.x
-      ) * renderer.scaleFactor;
-      const playerOffsetY = (
-        game.player.position.y - game.camera.position.y
-      ) * renderer.scaleFactor;
-
-      // Calculate angle relative to screen center
-      playerActions.rotation = Math.atan2(
-        (e.clientY - ((window.innerHeight) / 2)) - playerOffsetY,
-        (e.clientX - ((window.innerWidth) / 2)) - playerOffsetX
-      );
-    }
+    // Calculate angle relative to screen center
+    game.player.rotation = Math.atan2(
+      (e.clientY - ((window.innerHeight) / 2)) - playerOffsetY,
+      (e.clientX - ((window.innerWidth) / 2)) - playerOffsetX
+    );
   };
 
   // Listen for user input
   document.addEventListener('keydown', (e) => { registerInput(e); });
   document.addEventListener('keyup', (e) => { registerInput(e); });
-  document.addEventListener('mousemove', (e) => { registerInput(e); });
-  document.addEventListener('mouseup', (e) => { registerInput(e); });
   document.addEventListener('mousedown', (e) => { registerInput(e); });
+  document.addEventListener('mousemove', (e) => { handleMouseMove(e); });
+  document.addEventListener('mouseup', (e) => { registerInput(e); });
   window.addEventListener(
     'resize',
     (e) => { game.camera.onWindowResize(e); }
