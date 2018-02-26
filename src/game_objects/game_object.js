@@ -31,7 +31,6 @@ export default class GameObject extends EventEmitter {
   * Basic kinematics.
   */
   update(/* time */) {
-    this.position = this.position.add(this.velocity);
     if (this.model) {
       this.model.position = this.position;
       // TODO do this in object models

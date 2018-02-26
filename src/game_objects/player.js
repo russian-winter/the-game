@@ -13,6 +13,8 @@ export default class Player extends ParametricParticle {
     this.shootedAt = null;
     this.rotation = 0;
     this.millisecondsToReload = 150;
+    this.acelerationMagnitude = 30;
+    this.frictionCoefficient = 0.1;
 
     // Actions the player is performing
     this.playerActions = {
@@ -56,14 +58,16 @@ export default class Player extends ParametricParticle {
   * and the values are boolean and indicate if these actions are active
    */
   onPlayerInput(playerInput, time) {
-    const speed = 10;
-    this.initialVelocity = new Vector3(
+    this.initialAcceleration = new Vector3(
       (playerInput.left * -1) + (playerInput.right * 1),
       (playerInput.up * -1) + (playerInput.down * 1),
       0
-    ).normalize().multiply(speed);
+    ).normalize().multiply(this.acelerationMagnitude);
+
     this.initialTime = time;
     this.initialPosition = this.position;
+    this.initialVelocity = this.velocity;
+
     if (playerInput.left) {
       this.direction = new Vector3(-1, 0, 0);
     } else if (playerInput.right) {
@@ -97,16 +101,17 @@ export default class Player extends ParametricParticle {
     this.shootedAt = new Date();
 
     // Bullet volocity is player direction times some factor
-    const speed = 2;
+    const speed = 30;
     const bulletVelocity = new Vector3(
       Math.cos(this.rotation) * speed,
       Math.sin(this.rotation) * speed,
       0
     ).add(this.velocity);
+
     Bullet.create(
       this.position,
-      new Vector3(0.25, 0.25, 0.25),
       bulletVelocity,
+      new Vector3(),
       Date.now() / 1000
     );
   }

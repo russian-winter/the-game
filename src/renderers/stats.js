@@ -30,6 +30,9 @@ export default (context, game) => {
   renderString(`X: ${xPlayerPosition}`);
   renderString(`Y: ${yPlayerPosition}`);
   renderString(`N: ${numOfObjects}`);
+  renderString(`Velocity: ${game.player.velocity}`);
+  renderString(`Aceleration: ${game.player.initialAcceleration}`);
+  renderString(`Friction: ${game.player.friction}`);
 
   renderObject(game.player.playerActions, 'Player Actions');
 };
