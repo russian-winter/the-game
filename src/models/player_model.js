@@ -8,7 +8,7 @@ const onProgress = function (xhr) {
   }
 };
 
-const onError = function () { console.log('Error'); };
+const onError = function () { console.log('Error loading object'); };
 
 export default class PlayerModel extends Model {
   constructor(position = new Vector3()) {

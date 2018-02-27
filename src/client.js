@@ -1,8 +1,6 @@
 /* eslint-env browser */
 import Game from './game';
 import Renderer from './renderers/renderer';
-import THREE from './assets/js/three-js/three';
-
 
 // Wait for everything to load...
 document.addEventListener('DOMContentLoaded', () => {
