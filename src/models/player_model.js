@@ -27,7 +27,7 @@ export default class PlayerModel extends Model {
     };
     const objLoader = new THREE.OBJLoader(manager);
     objLoader.load(
-      './assets/3d_models/Space Shuttle.obj',
+      '../../the-game-assets/3d_models/Space Shuttle.obj',
       this.onLoadObject,
       onProgress,
       onError
