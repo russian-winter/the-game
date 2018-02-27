@@ -1,9 +1,7 @@
 /* eslint-env browser */
-import WebGLRenderer from 'three';
-
 export default class Renderer {
   constructor() {
-    this.renderer = new WebGLRenderer();
+    this.renderer = new THREE.WebGLRenderer();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(this.renderer.domElement);
   }
