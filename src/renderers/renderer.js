@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-import Vector3 from '../game_objects/vector3';
+import renderStats from './stats';
 
 export default class Renderer {
   constructor() {
@@ -45,10 +45,10 @@ export default class Renderer {
       return;
     }
 
-    const left = game.camera.position.x - game.camera.zoom;
-    const right = game.camera.position.x + game.camera.zoom;
-    const top = game.camera.position.y - game.camera.zoom;
-    const bottom = game.camera.position.y + game.camera.zoom;
+    const left = game.camera.position.x - game.camera.zoomX;
+    const right = game.camera.position.x + game.camera.zoomX;
+    const top = game.camera.position.y - game.camera.zoomY;
+    const bottom = game.camera.position.y + game.camera.zoomY;
 
     let xPosition = left;
     let yPosition = top;
@@ -96,5 +96,7 @@ export default class Renderer {
       }
       object.model.render(this.context, this.scaleFactor, game.camera);
     });
+
+    renderStats(this.context, game);
   }
 }

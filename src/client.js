@@ -24,15 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Start game loop!
   update();
 
-  // Actions the player is performing
-  const playerActions = {
-    up: false,
-    down: false,
-    right: false,
-    left: false,
-    shoot: false
-  };
-
   // Player actions associated with each keyCode
   const keyBindings = {
     32: 'shoot',
@@ -45,22 +36,50 @@ document.addEventListener('DOMContentLoaded', () => {
     87: 'up',
     65: 'left',
     83: 'down',
-    68: 'right'
+    68: 'right',
+    // mouse
+    mouseup: 'shoot',
+    mousedown: 'shoot'
   };
 
   // Handler for user input
   const registerInput = (e) => {
-    const isKeyDown = e.type === 'keydown';
-    const action = keyBindings[e.keyCode];
+    if (!game.player) { return; }
+    const isKeyDown = e.type === 'keydown' || e.type === 'mousedown';
+    const action = keyBindings[e.keyCode] || keyBindings[e.type];
 
     if (action) {
-      playerActions[action] = isKeyDown;
+      game.player.playerActions[action] = isKeyDown;
     }
 
-    game.player.onPlayerInput(playerActions);
+    game.player.onPlayerInput(game.player.playerActions, Date.now() / 1000);
+  };
+
+  // Handler for mousemove
+  const handleMouseMove = (e) => {
+    if (!game.player) { return; }
+    const playerOffsetX = (
+      game.player.position.x - game.camera.position.x
+    ) * renderer.scaleFactor;
+    const playerOffsetY = (
+      game.player.position.y - game.camera.position.y
+    ) * renderer.scaleFactor;
+
+    // Calculate angle relative to screen center
+    game.player.rotation = Math.atan2(
+      (e.clientY - ((window.innerHeight) / 2)) - playerOffsetY,
+      (e.clientX - ((window.innerWidth) / 2)) - playerOffsetX
+    );
   };
 
   // Listen for user input
   document.addEventListener('keydown', (e) => { registerInput(e); });
   document.addEventListener('keyup', (e) => { registerInput(e); });
+  document.addEventListener('mousedown', (e) => { registerInput(e); });
+  document.addEventListener('mousemove', (e) => { handleMouseMove(e); });
+  document.addEventListener('mouseup', (e) => { registerInput(e); });
+  window.addEventListener(
+    'resize',
+    (e) => { game.camera.onWindowResize(e); }
+  );
 });

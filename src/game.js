@@ -2,6 +2,7 @@ import EventEmitter from './game_objects/event_emitter';
 import World from './game_objects/world';
 import Player from './game_objects/player';
 import Camera from './game_objects/camera';
+import Vector3 from './game_objects/vector3';
 
 const Message = require('./networking/message');
 
@@ -52,11 +53,11 @@ export default class Game extends EventEmitter {
   * When running on a server, it sends updates to the clients.
   */
   update() {
-    const time = Date.now() + this.timeOffset;
+    const time = (Date.now() + this.timeOffset) / 1000;
     this.world.update(time);
 
     if (this.isServer) {
-      this.clients.forEach(client => client.update());
+      this.clients.forEach(client => client.update(time));
     }
   }
 
