@@ -75,7 +75,7 @@ export default class Game extends EventEmitter {
         // Pass the received time offset
         this.setGameTimeOffset(
           message.payload.getFloat64(0), // request sent from client at
-          message.payload.getFloat64(4) // request arrived to server at
+          message.payload.getFloat64(7) // request arrived to server at
         );
         break;
       default:
@@ -119,7 +119,7 @@ export default class Game extends EventEmitter {
       // Client specific code
       player.id = id;
       this.player = player;
-      this.camera = Camera.Create();
+      this.camera = Camera.create();
       this.camera.target = player;
     }
 
@@ -138,7 +138,7 @@ export default class Game extends EventEmitter {
     const clientPlayer = this.createPlayer();
     const message = new Message(Buffer.alloc(9));
     message.kind = Message.kindCodes.serverJoinResponse;
-    message.payload.setFloat64(clientPlayer.id);
+    message.payload.setFloat64(0, clientPlayer.id);
     console.log('about to answer...');
     this.connection.send(message, client);
   }

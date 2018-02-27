@@ -1,7 +1,6 @@
 import GameObject from './game_object';
 import Vector3 from './vector3';
 
-
 export default class Camera extends GameObject {
   constructor(...args) {
     super(...args);

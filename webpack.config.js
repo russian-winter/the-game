@@ -15,10 +15,11 @@ const clientConfig = {
 };
 
 const serverConfig = {
-  entry: './src/server.js',
+  entry: './src/game.js',
   output: {
     filename: 'bundle_node.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
+    libraryTarget: 'commonjs'
   },
   target: 'node'
 };

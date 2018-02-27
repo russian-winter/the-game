@@ -1,8 +1,6 @@
 const express = require('express');
 const { Server } = require('http');
-
-// TODO: Fix this. Find a way to require the Game
-const Game = require('./game');
+const Game = require('../dist/bundle_node').default; // It's the webpack bundle
 const GameServer = require('./networking/server_connection');
 
 // TODO: read this from process arguments
