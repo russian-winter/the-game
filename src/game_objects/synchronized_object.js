@@ -34,6 +34,17 @@ export default class SynchronizedObject extends GameObject {
   */
   deserialize(message) {
     this.ownerId = message.readNumber(1);
-    this.id = message.readNumber(9)
+    this.id = message.readNumber(9);
+  }
+
+  /**
+  * Creates a new object with the data from a network message.
+  * @message {Message} A network message.
+  * @return {SynchronizedObject} An instance of a SynchronizedObject.
+  */
+  static deserialize(message) {
+    const instance = new this();
+    instance.deserialize(message);
+    return instance;
   }
 }
