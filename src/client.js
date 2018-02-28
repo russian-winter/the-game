@@ -35,7 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
     down: false,
     right: false,
     left: false,
-    shoot: false
+    shoot: false,
+    rotate: false,
+    rotation: 0
   };
 
   // Player actions associated with each keyCode
@@ -62,10 +64,20 @@ document.addEventListener('DOMContentLoaded', () => {
       playerActions[action] = isKeyDown;
     }
 
+    // Handle mouse input
+    if (e.type === 'mousemove') {
+      playerActions.rotate = true;
+
+      // Calculate angle relative to screen center
+      playerActions.rotation = Math.atan2(e.clientY - (window.innerHeight / 2),
+        e.clientX - (window.innerWidth / 2));
+    }
+
     game.player.onPlayerInput(playerActions);
   };
 
   // Listen for user input
   document.addEventListener('keydown', (e) => { registerInput(e); });
   document.addEventListener('keyup', (e) => { registerInput(e); });
+  document.addEventListener('mousemove', (e) => { registerInput(e); });
 });

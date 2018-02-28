@@ -1,3 +1,5 @@
+/* globals Audio */
+
 import GameObject from './game_object';
 import Vector3 from './vector3';
 import Bullet from './bullet';
@@ -10,6 +12,9 @@ export default class Player extends GameObject {
     this.direction = new Vector3(1, 0, 0);
     this.health = 10;
     this.shooted = false;
+    this.rotation = 0;
+
+    this.shootingAudio = new Audio('../../the-game-assets/sounds/shoot.wav');
   }
 
   /**
@@ -57,6 +62,10 @@ export default class Player extends GameObject {
       this.shoot(playerInput.shoot);
     }
     this.shooted = playerInput.shoot;
+
+    if (playerInput.rotate) {
+      this.rotation = playerInput.rotation;
+    }
   }
 
   onHit() {
@@ -71,13 +80,27 @@ export default class Player extends GameObject {
    * Shoots a bullet in the direction the player is facing.
    */
   shoot() {
+    this.shootingAudio.pause();
+    this.shootingAudio.currentTime = 0;
+
     // Bullet volocity is player direction times some factor
     const speed = 2;
-    const velocity = this.direction.multiply(speed);
+    const bulletVelocity = new Vector3(
+      Math.cos(this.rotation) * speed,
+      Math.sin(this.rotation) * speed,
+      0
+    ).add(this.velocity);
     Bullet.create(
-      this.position.add(this.model.size.divide(2)),
+      this.position,
       new Vector3(0.25, 0.25, 0.25),
-      velocity
+      bulletVelocity
     );
+
+    this.shootingAudio.play();
+  }
+
+  update() {
+    super.update();
+    this.model.rotation = this.rotation;
   }
 }
