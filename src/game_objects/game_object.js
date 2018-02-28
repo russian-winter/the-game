@@ -1,11 +1,18 @@
 import EventEmitter from './event_emitter';
 import Vector3 from './vector3';
 
+// Sequence number for clientIds in the clients, and server ids in the server.
+let objectIdSequence = 1;
+
 export default class GameObject extends EventEmitter {
   constructor(position = new Vector3()) {
     super();
 
+    // Id for the identification of an object.
+    this.id = objectIdSequence++;
+
     // This allow us to represent objects of other players (or server objects)
+    // The owner id 0 is reserved for the server.
     this.ownerId = GameObject.defaultOwnerId;
 
     // Kinematics

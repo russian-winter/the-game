@@ -1,3 +1,5 @@
+// import Vector3 from '../game_objects/vector3';
+
 /**
 * The idea of this class is to abstract the message implementation from the
 * logic that handles the messages. So no other class should be aware of the
@@ -57,6 +59,49 @@ class Message {
   */
   getServerBuffer() {
     return Buffer.from(this.arrayBuffer);
+  }
+
+  /**
+  * Writes a vector3 into the payload. It requires 12 bytes.
+  * @offset {number} Where in the PAYLOAD you want the vector to be written.
+  * @vector {Vector3} The vector you want to serialize.
+  */
+  writeVector3(offset, vector) {
+    this.payload.setFloat32(offset, vector.x);
+    this.payload.setFloat32(offset + 4, vector.y);
+    this.payload.setFloat32(offset + 8, vector.z);
+  }
+
+
+  /**
+  * Reads a vector3 from the payload (12 bytes).
+  * @offset {number} Where in the PAYLOAD you want to start reading.
+  * @return {Vector3} The vector you want to deserialize.
+  */
+  readVector3(offset) {
+    /*const vector = new Vector3();
+    vector.x = this.payload.getFloat32(offset);
+    vector.y = this.payload.getFloat32(offset + 4);
+    vector.z = this.payload.getFloat32(offset + 8);
+    return vector;*/
+  }
+
+  /**
+  * Writes a number to the payload. It requires 8 bytes.
+  * @offset {number} Where in the PAYLOAD you want the number to be written.
+  * @number {number} The value you want to serialize.
+  */
+  writeNumber(offset, number) {
+    this.payload.setFloat64(offset, number);
+  }
+
+  /**
+  * Reads a number from the payload (8 bytes).
+  * @offset {number} Where in the PAYLOAD you want to start reading.
+  * @return {number} The value you want to deserialize.
+  */
+  readNumber(offset) {
+    this.payload.getFloat64(offset);
   }
 
   /**

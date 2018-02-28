@@ -70,13 +70,14 @@ export default class Game extends EventEmitter {
     switch (message.kind) {
       case Message.kindCodes.serverJoinResponse:
         // Pass the received player id to createPlayer.
-        this.createPlayer(message.payload.getUint32(0));
+        this.createPlayer(message.readNumber(0));
         break;
+
       case Message.serverGameTimeResponse:
         // Pass the received time offset
         this.setGameTimeOffset(
-          message.payload.getFloat64(0), // request sent from client at
-          message.payload.getFloat64(7) // request arrived to server at
+          message.getNumber(0), // request sent from client at
+          message.getNumber(8) // request arrived to server at
         );
         break;
       default:
