@@ -1,7 +1,5 @@
 import Model from './object_model';
 import Vector3 from '../game_objects/vector3';
-import THREE from '../assets/js/three-js/three';
-
 
 export default class BulletModel extends Model {
   constructor(position = new Vector3()) {
