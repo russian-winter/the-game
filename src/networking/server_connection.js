@@ -50,10 +50,19 @@ class ServerConnection {
   */
   onDataReceived(data, peer) {
     const message = new Message(data);
+
     console.log(
       `New data from ${peer.remoteAddress}:${peer.remotePort} - ${
         Message.kindNameFromKindCode(message.kind)}`
     );
+
+    // A first connection message? Say hi!
+    if (message.kind === Message.kindCodes.clientHello) {
+      this.send(Message.fromKindCode(Message.kindCodes.serverHello), peer);
+      return;
+    }
+
+    // Not a connection message? call the game
     this.onMessageHandler(message, peer);
   }
 

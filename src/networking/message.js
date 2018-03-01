@@ -25,7 +25,7 @@ class Message {
 
     // Create some data views so we can do.. things (array buffers)
     this.dataView = new DataView(this.arrayBuffer);
-    this.payload = new DataView(this.arrayBuffer, 1);
+    this.payload = new DataView(this.arrayBuffer, Message.payloadOffset);
   }
 
   /**
@@ -79,11 +79,11 @@ class Message {
   * @return {Vector3} The vector you want to deserialize.
   */
   readVector3(offset) {
-    /*const vector = new Vector3();
+    const vector = new Message.gameModules.Vector3();
     vector.x = this.payload.getFloat32(offset);
     vector.y = this.payload.getFloat32(offset + 4);
     vector.z = this.payload.getFloat32(offset + 8);
-    return vector;*/
+    return vector;
   }
 
   /**
@@ -101,7 +101,25 @@ class Message {
   * @return {number} The value you want to deserialize.
   */
   readNumber(offset) {
-    this.payload.getFloat64(offset);
+    return this.payload.getFloat64(offset);
+  }
+
+  /**
+  * Writes a single byte to the payload.
+  * @offset {number} Where in the PAYLOAD you want the number to be written.
+  * @byte {number} The value you want to write.
+  */
+  writeByte(offset, byte) {
+    this.payload.setUint8(offset, byte);
+  }
+
+  /**
+  * Reads a single byte from the payload.
+  * @offset {number} Where in the PAYLOAD you want to read.
+  * @return {number} The value you want to read.
+  */
+  readByte(offset) {
+    return this.payload.getUint8(offset);
   }
 
   /**
@@ -156,5 +174,8 @@ Message.kindCodes = {
   clientDestroyObject: 0x44,
   serverDestroyObject: 0x45
 };
+
+// Number of bytes before the start of the payload.
+Message.payloadOffset = 1;
 
 module.exports = Message;

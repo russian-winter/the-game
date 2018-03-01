@@ -7,6 +7,7 @@ export default class ClientConnection {
   constructor(onMessageHandler) {
     this.socket = null; // WebSocket for signals exchange
     this.peer = null; // WebRTC connection
+    this.connected = false;
     this.onMessageHandler = onMessageHandler;
   }
 
@@ -35,13 +36,22 @@ export default class ClientConnection {
       this.socket.on('signal', data => this.peer.signal(data));
 
       // Set the handlers for incoming data
-      this.peer.on('data', data => this.onDataReceived(data));
+      this.peer.on('data', (data) => {
+        if (!this.connected) {
+          // This is a server hello after our client hello, the connection
+          // is now completed!
+          this.connected = true;
+          resolve();
+          return;
+        }
+
+        this.onDataReceived(data);
+      });
 
       // WebRTC connection is successful!
       this.peer.on('connect', () => {
         // Now we can send data to the server:
         this.send(Message.fromKindCode(Message.kindCodes.clientHello));
-        resolve();
       });
     });
   }
