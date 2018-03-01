@@ -14,9 +14,9 @@ const gameModules = {
 Message.gameModules = gameModules;
 
 export default class Game extends EventEmitter {
-  constructor(ClientConnection, serverConnection) {
+  constructor(ClientConnection, ServerConnection, netServer) {
     super();
-    this.isServer = !!serverConnection;
+    this.isServer = !!ServerConnection;
     this.timeOffset = 0;
 
     // Initialize game objects
@@ -29,14 +29,18 @@ export default class Game extends EventEmitter {
 
     // Client and server specific code
     if (this.isServer) {
+      // [Server only]
       this.clients = []; // references to the clients
-      this.connection = serverConnection; // save referene to server connection
 
-      // Bind the game as message handler
-      this.connection.onMessageHandler = (message, client) => {
+      // Create the server and bind the game as message handler
+      this.connection = new ServerConnection((message, client) => {
         this.onClientMessage(message, client);
-      };
+      });
+
+      // Start listening for new clients!
+      this.connection.listen(netServer);
     } else {
+      // [Client only]
       this.player = null; // The current player
       this.camera = null; // the current camera
 
