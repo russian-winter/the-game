@@ -1,16 +1,19 @@
 import Vector3 from './vector3';
-import GameObject from './game_object';
+import SynchronizedObject from './synchronized_object';
 
-
-export default class ParametricParticle extends GameObject {
+export default class ParametricParticle extends SynchronizedObject {
   constructor(position = new Vector3(), velocity = new Vector3(),
     acceleration = new Vector3(), time = 0, finalTime = 0) {
     super(position);
+
+    // Serializable
     this.initialPosition = position;
     this.initialVelocity = velocity;
     this.initialAcceleration = acceleration;
     this.initialTime = time;
     this.finalTime = finalTime; // Final acceleration time
+
+    // Non-serializable
     this.isConstantSpeed = false;
   }
 
@@ -42,4 +45,35 @@ export default class ParametricParticle extends GameObject {
 
     super.update(time);
   }
+
+  /**
+  * Returns a message to be sent over the network.
+  * @return {Message} A message with its payload filled with data.
+  */
+  serialize() {
+    const offset = SynchronizedObject.serializationSize;
+    const message = super.serialize();
+    message.writeVector3(offset, this.initialPosition);
+    message.writeVector3(offset + 12, this.initialVelocity);
+    message.writeVector3(offset + 24, this.initialAcceleration);
+    message.writeNumber(offset + 36, this.initialTime);
+    message.writeNumber(offset + 44, this.finalTime);
+    return message;
+  }
+
+  /**
+  * Updates this object with the values from a network message.
+  * @message {Message} the network message.
+  */
+  deserialize(message) {
+    super.deserialize(message);
+    const offset = SynchronizedObject.serializationSize;
+    this.initialPosition = message.writeVector3(offset);
+    this.initialVelocity = message.writeVector3(offset + 12);
+    this.initialAcceleration = message.writeVector3(offset + 24);
+    this.initialTime = message.writeNumber(offset + 36);
+    this.finalTime = message.writeNumber(offset + 44);
+  }
 }
+
+ParametricParticle.serializationSize = 68; // bytes

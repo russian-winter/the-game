@@ -15,7 +15,7 @@ export default class SynchronizedObject extends GameObject {
 
   /**
   * [It should only be called from Serializer.serialize(...)].
-  * Returns a message to be sent over the network. The message kind
+  * Returns a message to be sent over the network.
   * @return {Message} A message with its payload filled with data.
   */
   serialize() {
@@ -39,6 +39,7 @@ export default class SynchronizedObject extends GameObject {
 
   /**
   * Updates this object with the values from a network message.
+  * @message {Message} the network message.
   */
   deserialize(message) {
     this.ownerId = message.readNumber(objectOffset + 0); // 8 bytes: 0-7
