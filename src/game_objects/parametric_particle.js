@@ -30,11 +30,12 @@ export default class ParametricParticle extends SynchronizedObject {
       );
       // Velocity at the final time
       this.initialVelocity = (
-        this.initialVelocity +
-        this.initialAcceleration.multiply(finalDeltaTime)
+        this.initialVelocity.add(
+          this.initialAcceleration.multiply(finalDeltaTime)
+        )
       );
       // Acceleration at the final time
-      this.initialAcceleration = 0;
+      this.initialAcceleration = new Vector3();
       // Time at the final time
       this.initialTime = this.finalTime;
     }
@@ -42,7 +43,9 @@ export default class ParametricParticle extends SynchronizedObject {
     this.position = this.initialPosition.add(
       this.initialVelocity.multiply(deltaTime)
     ).add(this.initialAcceleration.multiply((deltaTime * deltaTime) / 2));
-
+    this.velocity = (
+      this.initialVelocity.add(this.initialAcceleration.multiply(deltaTime))
+    );
     super.update(time);
   }
 

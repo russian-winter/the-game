@@ -5,7 +5,7 @@ import PlayerModel from '../models/player_model';
 
 export default class Player extends ParametricParticle {
   constructor(position, velocity, acceleration, time) {
-    super(position, velocity, acceleration, time, Infinity);
+    super(position, velocity, acceleration, time, 3000);
 
     this.direction = new Vector3(1, 0, 0);
     this.health = 10;
