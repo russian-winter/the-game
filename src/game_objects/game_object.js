@@ -35,7 +35,7 @@ export default class GameObject extends EventEmitter {
   }
 
   /**
-  * Basic kinematics.
+  * Updates model position
   */
   update(/* time */) {
     if (this.model) {

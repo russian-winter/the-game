@@ -4,38 +4,42 @@ import GameObject from './game_object';
 
 export default class ParametricParticle extends GameObject {
   constructor(position = new Vector3(), velocity = new Vector3(),
-    acceleration = new Vector3(), time = 0, frictionCoefficient = 0) {
+    acceleration = new Vector3(), time = 0, finalTime = 0) {
     super(position);
     this.initialPosition = position;
-    this.velocity = velocity;
     this.initialVelocity = velocity;
     this.initialAcceleration = acceleration;
-    this.acceleration = acceleration;
     this.initialTime = time;
-    this.frictionCoefficient = frictionCoefficient;
-    this.friction = new Vector3();
+    this.finalTime = finalTime; // Final acceleration time
+    this.isConstantSpeed = false;
   }
 
   update(time) {
     const deltaTime = time - this.initialTime;
 
-    this.friction = this.velocity.multiply(this.frictionCoefficient);
-
-    this.acceleration = this.initialAcceleration.subtract(this.friction);
+    if (!this.isConstantSpeed && time > this.finalTime) {
+      const finalDeltaTime = time - this.finalTime;
+      // Position at the final time
+      this.initialPosition = this.initialPosition.add(
+        this.initialVelocity.multiply(finalDeltaTime)
+      ).add(
+        this.initialAcceleration.multiply((finalDeltaTime * finalDeltaTime) / 2)
+      );
+      // Velocity at the final time
+      this.initialVelocity = (
+        this.initialVelocity +
+        this.initialAcceleration.multiply(finalDeltaTime)
+      );
+      // Acceleration at the final time
+      this.initialAcceleration = 0;
+      // Time at the final time
+      this.initialTime = this.finalTime;
+    }
 
     this.position = this.initialPosition.add(
       this.initialVelocity.multiply(deltaTime)
-    ).add(this.acceleration.multiply((deltaTime * deltaTime) / 2));
+    ).add(this.initialAcceleration.multiply((deltaTime * deltaTime) / 2));
 
-    this.velocity = (
-      this.acceleration.multiply(deltaTime)
-        .add(this.initialVelocity)
-    );
-
-    this.initialPosition = this.position;
-    this.initialVelocity = this.velocity;
-    this.initialTime = time;
-
-    super.update();
+    super.update(time);
   }
 }
